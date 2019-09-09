@@ -1,0 +1,30 @@
+<% include ./partials/header %>
+
+<div class="row">
+    <h1 style="text-align: center">Login</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <div class="text-center">
+                    <img  class="img-thumbnail" style="border: 1px solid #fff;" src="https://aws-website-amp-bbq2v.s3.amazonaws.com/logo.png"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="width: 50%; margin: 25px auto;">
+        <form action="/login" method="post">
+            <div class="form-group">
+                <input class="form-control" type="text" name="username" placeholder="username">
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="password" name="password" placeholder="password">
+            </div>
+            <div class="form-group">
+                <button class="btn btn-lg btn-primary btn-block">Login</button>
+            </div>
+        </form>
+        <a href="/campgrounds">Go Back</a> <a style="float: right;" href="#">Forgot Password</a>
+    </div>
+</div>
+
+<% include ./partials/footer %>
