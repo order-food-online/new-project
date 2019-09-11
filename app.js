@@ -18,7 +18,7 @@ var reviewRoutes			= require("./routes/reviews");
 app.locals.moment = require("moment");
 
 var url = process.env.DATABASEURL || "mongodb://localhost/yelp_camp_v10";
-mongoose.connect(url);
+mongoose.connect(url, {useNewUrlParser: true});
 //mongoose.connect("mongodb://localhost:27017/have_lots_v1", {useNewUrlParser: true});
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
