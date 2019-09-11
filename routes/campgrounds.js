@@ -9,7 +9,7 @@ var Comment = require("../models/comment");
 var options = {
   provider: 'google',
   httpAdapter: 'https',
-  apiKey: "GEOCODER_API_KEY=AIzaSyAe1yAyaNzM1pyf5R2gL4ET-C8retgt1JY",
+  apiKey: 'AIzaSyAe1yAyaNzM1pyf5R2gL4ET-C8retgt1JY',
   formatter: null
 };
  
