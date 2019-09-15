@@ -70,9 +70,6 @@ router.get("/privacy-policy", function(req, res){
 });
 //========================================================
 
-router.post("/send_form_email.php",function (req, res) {
-  res.render("send_form_email.php", {page: "send_form_email.php"});
-});
 
 //handle sign up logic
 router.post("/register", upload.single("image"), function(req, res){
