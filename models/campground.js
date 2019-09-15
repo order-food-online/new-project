@@ -3,10 +3,16 @@ var Review = require("./review");
 //SCHEMA SETUP DATABASE MODEL.
 var campgroundSchema = new mongoose.Schema({
 	name: String,
-	price: String,
-	image: String,
+	image: {
+		id: String,
+		url: String
+	},
+	age: String,
+	type_items: String,
 	description: String,
+	gender: String,
 	location: String,
+	postal_code: String,
 	lat: Number,
 	lng: Number,
 	createdAt: { type: Date, default: Date.now },

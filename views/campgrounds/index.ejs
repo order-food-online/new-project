@@ -21,7 +21,7 @@
         <% campgrounds.forEach(function(campgrounds){ %>
         <div class="col-md-3 col-sm-6">
             <div class="thumbnail">
-                <img src="<%= campgrounds.image %>">
+                <img src="<%= campgrounds.image.url %>" class="img-responsive" style="height:250px; width: 300px;">
                 <div class="caption">
                     <h4><%= campgrounds.name %></h4>
                     <% if (campgrounds.rating === 0) { %>
@@ -38,7 +38,7 @@
 				<span class="badge label-primary"><i class="fa fa-thumbs-up"></i> <%= campgrounds.likes.length %></span>
 				</div>
                 <p>
-                    <a href="/campgrounds/<%= campgrounds._id %>" class="btn btn-primary">More Info</a>
+                    <a href="/campgrounds/<%= campgrounds._id %>" class="btn btn-primary btn-md active"><i class="fa fa-plus"></i> View Listing</a>
                 </p>
             </div>
         </div>

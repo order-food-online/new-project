@@ -25,3 +25,13 @@
 .checked {
 	color: orange;
 }
+.navbar-header {
+	background: #ffffff;
+}
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+   background: #ffffff;
+}
+.navbar-default {
+    background-color: #ffffff;
+    border-color: #000000;
+}

@@ -4,8 +4,8 @@ var passportLocalMongoose = require("passport-local-mongoose");
 var UserSchema = new mongoose.Schema({
 	username: String,
 	password: String,
-	//change avatar to image upload for profile
-	avatar: String,
+	image: String,
+	imageId: String,
 	firstName: String,
 	lastName: String,
 	email: String,

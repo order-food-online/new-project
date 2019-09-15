@@ -25,6 +25,7 @@ mongoose.connect('mongodb+srv://jamespostrasija:joejoe12345@cluster0-fchnu.mongo
 }).catch(err => {
 	console.log('ERROR', err.message);
 });
+// Load a plugin.
 //code for connecting data part 1
 //var url = process.env.DATABASEURL || "mongodb://localhost/yelp_camp_v10";
 //mongoose.connect(url, {useNewUrlParser: true});

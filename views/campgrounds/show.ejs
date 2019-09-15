@@ -5,17 +5,17 @@
 			<!--sidebar bootstrap code-->
 			<p class="lead">Have Lots Need Lots</p>
 			<div class="list-group">
-				<li class="list-group-item active">Info 1</li>
-				<li class="list-group-item">Info 2</li>
-				<li class="list-group-item">Info 3</li>
+				<li class="list-group-item"><a href="/campgrounds/new" class="list-group-item-primary">Post A Lot</a></li>
+				<li class="list-group-item"><a href="/users/<%= campgrounds.author.id %>" class="list-group-item-primary">User Profile</a></li>
+				<li class="list-group-item"><a href="/campgrounds/">View All Listings</a></li>
 			</div>
 			<div id="map"></div>
 		</div>
+		<br>
 		<div class="col-md-9">
 			<div class="thumbnail">
-				<img class="img-responsive" src="<%= campgrounds.image %>">
+				<img class="img-responsive" src="<%= campgrounds.image.url %>" alt="<%= campgrounds.name %>">
 				<div class="caption-full">
-					<h4 class="pull-right">$<%= campgrounds.price %>/night</h4>
 					<h4><a><%= campgrounds.name %></a></h4>
 					<!--code for likes starts-->
 					<div class="pull-right">
@@ -45,7 +45,17 @@
                         </form>
                     </div>
 					<!--code for likes ends-->
-					<p><%= campgrounds.description %></p>
+					<hr>
+					<p><strong>Description:</strong> <%= campgrounds.description %></p>
+					<hr>
+					<p><strong>Gender:</strong> <%=campgrounds.gender %></p>
+					<hr>
+					<p><strong>Age:</strong> <%= campgrounds.age %></p>
+					<hr>
+					<p><strong>Types of Items:</strong> <%= campgrounds.type_items %></p>
+					<hr>
+					<p><strong>Postal Code:</strong> <%= campgrounds.postal_code %></p>
+					<hr>
 					<p>
 						<em>Submitted By: <a href="/users/<%= campgrounds.author.id %>"><%= campgrounds.author.username %></a>, <%= moment(campgrounds.createdAt).fromNow() %></em>
 					</p>

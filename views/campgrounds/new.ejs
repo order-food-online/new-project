@@ -1,29 +1,45 @@
 <% include ../partials/header %>
 
 	<div class="row">
-		<h1 style="text-align: center;">Create a New Campground</h1>
+		<h1 style="text-align: center;">Create a New Lot</h1>
 		<div style="width: 30%;margin: 25px auto;">
-			<form action="/campgrounds" method="POST">
+			<form action="/campgrounds" method="POST" enctype="multipart/form-data">
 				<div class="form-group">
-					<label for="name">Name</label>
-					<input class="form-control" type="text" name="name" placeholder="name">
+					<label for="name">Ad Headline Title</label>
+					<input class="form-control" type="text" name="name" placeholder="Add Headline Title">
 				</div>
 				<div class="form-group">
-					<label for="price">Price</label>
-				<input class="form-control" type="number" name="price" placeholder="price" min="0.01" step="0.01">
+					<label for="age">Age</label>
+				<input class="form-control" type="text" name="age" placeholder="ie. 2 months">
 				</div>
 				<div class="form-group">
-					<label for="image">Image</label>
-					<input class="form-control" type="text" name="image" placeholder="image url">
+					<label for="type_items">Type of Items</label>
+				<input class="form-control" type="text" name="type_items" placeholder="ie. Baby Clothes, Toys etc.">
+				</div>
+				<div class="form-group">
+					<label for="gender">Gender</label>
+				<select name="gender" class="form-control">
+					<option value="Male">Male</option>
+					<option value="Female">Female</option>
+					<option value="Unisex">Unisex</option>
+				</select>
+				</div>
+				<div class="form-group">
+					<label for="image">Image#1</label>
+					<input class="form-control" type="file" name="imageLocal" accept="image/*" required>
 				</div>
 				<div class="form-group">
 					<label for="description">Description</label>
-					<input class="form-control" type="text" name="description" placeholder="description">
+					<textarea class="form-control"  type="text" name="description" placeholder="description"></textarea>
 				</div>
 				<div class="form-group">
     		    <label for="location">Location</label>
     				<input class="form-control" type="text" name="location" id="location" 
 						   placeholder="Yosemite National Park, CA"></div>
+			   <div class="form-group">
+					<label for="postal_code">Postal Code</label>
+				<input class="form-control" type="text" name="postal_code" placeholder="Postal Code">
+				</div>
 				<div class="form-group">
 					<button class="btn btn-lg btn-primary btn-block">Submit</button>
 				</div>
