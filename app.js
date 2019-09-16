@@ -7,12 +7,12 @@ var flash                   = require("connect-flash");
 var passport 				= require("passport");
 var LocalStrategy 			= require("passport-local");
 var methodOverride          = require("method-override");
-var Campground 				= require("./models/campground");
+var Lot				        = require("./models/lot");
 var Comment 				= require("./models/comment");
 var User 					= require("./models/user");
 var seedDB 					= require("./seeds");
 var commentRoutes 			= require("./routes/comments");
-var campgroundRoutes 		= require("./routes/campgrounds");
+var lotRoutes 		        = require("./routes/lot");
 var indexRoutes 			= require("./routes/index");
 var reviewRoutes			= require("./routes/reviews");
 app.locals.moment = require("moment");
@@ -59,9 +59,9 @@ app.use(function(req, res, next){
 });
 // requiring routes
 app.use("/", indexRoutes);
-app.use("/campgrounds", campgroundRoutes);
-app.use("/campgrounds/:id/comments", commentRoutes);
-app.use("/campgrounds/:id/reviews", reviewRoutes);
+app.use("/lots", lotRoutes);
+app.use("/lots/:id/comments", commentRoutes);
+app.use("/lots/:id/reviews", reviewRoutes);
 
 //server connection for server
 //app.listen(8080, () => {

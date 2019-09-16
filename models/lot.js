@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 var Review = require("./review");
 //SCHEMA SETUP DATABASE MODEL.
-var campgroundSchema = new mongoose.Schema({
+var lotSchema = new mongoose.Schema({
 	name: String,
 	image: {
 		id: String,
@@ -48,4 +48,4 @@ var campgroundSchema = new mongoose.Schema({
 });
 
 //SCHEMA MODE ORIENTATION
-module.exports = mongoose.model("Campground", campgroundSchema);
+module.exports = mongoose.model("Lot", lotSchema);

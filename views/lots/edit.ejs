@@ -1,20 +1,20 @@
 <% include ../partials/header %>
 	
 <div class="row">
-		<h1 style="text-align: center;">Edit <%= campground.name %> </h1>
+		<h1 style="text-align: center;">Edit <%= lot.name %> </h1>
 		<div style="width: 30%;margin: 25px auto;">
-			<form action="/campgrounds/<%= campground._id %>/?_method=PUT" method="POST" enctype="multipart/form-data">
+			<form action="/lots/<%= lot._id %>/?_method=PUT" method="POST" enctype="multipart/form-data">
 				<div class="form-group">
 					<label for="name">Headline Name</label>
-					<input class="form-control" type="text" name="name" value="<%= campground.name %>">
+					<input class="form-control" type="text" name="name" value="<%= lot.name %>">
 				</div>
 				<label for="age">Age</label>
 				<div class="form-group">
-				<input class="form-control" type="text" name="age" value="<%= campground.age %>">
+				<input class="form-control" type="text" name="age" value="<%= lot.age %>">
 				</div>
 				<div class="form-group">
 					<label for="gender">Gender</label>
-				<select name="gender" class="form-control" value="<%= campground.gender %>">
+				<select name="gender" class="form-control" value="<%= lot.gender %>">
 					<option value="Male">Male</option>
 					<option value="Female">Female</option>
 					<option value="Unisex">Unisex</option>
@@ -22,30 +22,30 @@
 				</div>
 				<div class="form-group">
 					<label for="type_items">Type of Items</label>
-				<input class="form-control" type="text" name="type_items" placeholder="ie. Baby Clothes, Toys etc." value="<%= campground.type_items %>">
+				<input class="form-control" type="text" name="type_items" placeholder="ie. Baby Clothes, Toys etc." value="<%= lot.type_items %>">
 				</div>
 				<div class="form-group">
 					<label for="imageLocal">Upload Image</label>
 					<input class="form-control" type="file" name="imageLocal" accept="image/*">
-					<div><img src="<%= campground.image.url %>" style="height: 100px; width: 100px;"></div>
+					<div><img src="<%= lot.image.url %>" style="height: 100px; width: 100px;"></div>
 				</div>
 				<div class="form-group">
 					<label for="description">Description</label>
-					<textarea class="form-control" name="description"><%= campground.description %> </textarea>
+					<textarea class="form-control" name="description"><%= lot.description %> </textarea>
 				</div>
 				<div class="form-group">
 					<label for="location">Location</label>
-    			<input class="form-control" placeholder="City, Province/State, Country" type="text" name="location" id="location" value="<%= campground.location %>">
+    			<input class="form-control" placeholder="City, Province/State, Country" type="text" name="location" id="location" value="<%= lot.location %>">
 				</div>
 				<div class="form-group">
 					<label for="postal_code">Postal Code</label>
-				<input class="form-control" type="text" name="postal_code" placeholder="Postal Code" value="<%= campground.postal_code %>">
+				<input class="form-control" type="text" name="postal_code" placeholder="Postal Code" value="<%= lot.postal_code %>">
 				</div>
 				<div class="form-group">
 					<button class="btn btn-lg btn-primary btn-block">Submit</button>
 				</div>
 			</form>
-			<a href="/campgrounds">Go Back</a>
+			<a href="/lots">Go Back</a>
 		</div>
 	</div>
 

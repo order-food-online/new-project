@@ -1,19 +1,19 @@
-var Campground = require("../models/campground");
+var Lot = require("../models/lot");
 var Comment = require("../models/comment");
 var Review = require("../models/review");
 // all the middleware goes here
 var middlewareObj = {};
 
-//campground loggin check ownership middleware
-middlewareObj.checkCampgroundOwnership = function(req, res, next){
+//Lot loggin check ownership middleware
+middlewareObj.checkLotOwnership = function(req, res, next){
 	if(req.isAuthenticated()){
-		Campground.findById(req.params.id, function(err, foundCampground){
-			if(err || !foundCampground){
-				req.flash("error", "Campground not found");
+		Lot.findById(req.params.id, function(err, foundLot){
+			if(err || !foundLot){
+				req.flash("error", "Lot Listing not found");
 				res.redirect("back");
 			}else {
-				// does user own campground?
-				if(foundCampground.author.id.equals(req.user._id) || req.user.isAdmin){
+				// does user own Lot Listing?
+				if(foundLot.author.id.equals(req.user._id) || req.user.isAdmin){
 					next();
 				} else {
 					req.flash("error", "You don't have permission to do that!");
@@ -76,18 +76,18 @@ middlewareObj.checkReviewOwnership = function(req, res, next) {
 // review ownership
 middlewareObj.checkReviewExistence = function (req, res, next) {
     if (req.isAuthenticated()) {
-        Campground.findById(req.params.id).populate("reviews").exec(function (err, foundCampground) {
-            if (err || !foundCampground) {
-                req.flash("error", "Campground not found.");
+        Lot.findById(req.params.id).populate("reviews").exec(function (err, foundLot) {
+            if (err || !foundLot) {
+                req.flash("error", "Lot Listing not found.");
                 res.redirect("back");
             } else {
                 // check if req.user._id exists in foundCampground.reviews
-                var foundUserReview = foundCampground.reviews.some(function (review) {
+                var foundUserReview = foundLot.reviews.some(function (review) {
                     return review.author.id.equals(req.user._id);
                 });
                 if (foundUserReview) {
                     req.flash("error", "You already wrote a review.");
-                    return res.redirect("/campgrounds/" + foundCampground._id);
+                    return res.redirect("/lots/" + foundLot._id);
                 }
                 // if the review was not found, go to the next middleware
                 next();

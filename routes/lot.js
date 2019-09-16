@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-var Campground = require("../models/campground");
+var Lot = require("../models/lot");
 var middleware = require("../middleware");
 var NodeGeocoder = require("node-geocoder");
 var Review = require("../models/review");
@@ -53,23 +53,23 @@ router.get('/', (req, res) => {
   // search was used
   if (req.query.search) {
     let regex = new RegExp(escapeRegex(req.query.search), 'gi');
-    Campground.find({name: regex}, (err, campgrounds) => {
-      if (err || !campgrounds) {
+    Lot.find({name: regex}, (err, lots) => {
+      if (err || !lots) {
         req.flash('error', 'There was a problem with the search.');
       }
       // if no results found, send a message to display in the view
       let message = 'Couldn\'t find a matching campround name.';
-      campgrounds.length === 0
-        ? res.render('campgrounds/index', {campgrounds: campgrounds, currentPage: 'campgrounds', searchMessage: message})
-        : res.render('campgrounds/index', {campgrounds: campgrounds, currentPage: 'campgrounds'});
+      lots.length === 0
+        ? res.render('lots/index', {lots: lots, currentPage: 'lots', searchMessage: message})
+        : res.render('lots/index', {lots: lots, currentPage: 'lots'});
     });
   } else {
-  // get all campgrounds from DB
-    Campground.find({}, (err, campgrounds) => {
+  // get all lot listings from DB
+    Lot.find({}, (err, lots) => {
       if (err) {
         throw err;
       } else {
-        res.render('campgrounds/index', {campgrounds: campgrounds, currentPage: 'campgrounds'});
+        res.render('lots/index', {lots: lots, currentPage: 'lots'});
       }
     });
   }
@@ -78,30 +78,30 @@ router.get('/', (req, res) => {
 
 //======================================================================
 
-//INDEX - SHOWS ALL CAMPGROUNDS
-//route app campground page
+//INDEX - SHOWS ALL LOT LISTINGS
+//route app Lot Listing page
 
 //======================================================================
 router.get("/", function(req, res){
-	//get all campgrounds from DB
-	Campground.find({}, function(err, allCampgrounds){
+	//get all lot listings from DB
+	Lot.find({}, function(err, allLots){
 		if(err){
 			console.log(err);
 		} else {
-			res.render("campgrounds/index", {campgrounds: allCampgrounds, page: "campgrounds"});
+			res.render("lots/index", {lots: allLots, page: "lots"});
 		}
 	});
 });
 
 //=====================================================================
 
-//CREATE - ADD NEW CAMGROUND to DATABASE
-//posting new campground function
+//CREATE - ADD NEW LOTS to DATABASE
+//posting new Lots Listing function
 
 //=====================================================================
 
 router.post("/", middleware.isLoggedIn, upload.single("imageLocal"), function(req, res){
-	//get data from form and add to campgrounds array
+	//get data from form and add to lots listing array
 	var name = req.body.name;
 	var age = req.body.age;
 	var type_items = req.body.type_items;
@@ -137,13 +137,13 @@ router.post("/", middleware.isLoggedIn, upload.single("imageLocal"), function(re
           url: result.secure_url
         }
         //cloudinary ends
-         Campground.create({name, age, type_items, gender, postal_code, image, description, location, lat, lng, author}, (err, campground) => {
+         Lot.create({name, age, type_items, gender, postal_code, image, description, location, lat, lng, author}, (err, lot) => {
           if (err) {
-            req.flash("error", "Couldn\'t add campground.");
+            req.flash("error", "Couldn\'t add Lot Listing.");
           } else {
-            req.flash("success", "Campground added successfully.");
+            req.flash("success", "Lot Listing added successfully.");
           }
-          res.redirect("/campgrounds");
+          res.redirect("/lots");
         });
       });
     } else { (console.log("no file to upload!!")); }
@@ -169,28 +169,28 @@ router.post("/", middleware.isLoggedIn, upload.single("imageLocal"), function(re
 
 //=====================================================================
 
-//NEW - SHOW form to create new campground
+//NEW - SHOW form to create new Lots
 
 //=====================================================================
 
 router.get("/new", middleware.isLoggedIn, function(req, res){
-	res.render("campgrounds/new");	
+	res.render("lots/new");	
 });
 
-//SHOW - shows more info about one campground
+//SHOW - shows more info about one lots
 router.get("/:id", function(req, res){
-	//find the campground with provided ID/addred reviews populate function
-	Campground.findById(req.params.id).populate("comments").populate("likes").populate({
+	//find the lot listing with provided ID/addred reviews populate function
+	Lot.findById(req.params.id).populate("comments").populate("likes").populate({
 		path: "reviews",
 		options: {sort: {createdAt: -1}}
-	}).exec(function(err, foundCampground){
-		if(err || !foundCampground){
+	}).exec(function(err, foundLot){
+		if(err || !foundLot){
 			req.flash("error", "Campground not Found!");
 			res.redirect("back");
 		} else {
-			console.log(foundCampground);
-			//render show template with that campground
-			res.render("campgrounds/show", {campgrounds: foundCampground});
+			console.log(foundLot);
+			//render show template with that Lots Listing
+			res.render("lots/show", {lots: foundLot});
 		}
 	});
 });
@@ -201,9 +201,9 @@ router.get("/:id", function(req, res){
 
 //=======================================================================
 
-router.get("/:id/edit", middleware.checkCampgroundOwnership, function(req, res){
-		Campground.findById(req.params.id, function(err, foundCampground){
-					res.render("campgrounds/edit", {campground: foundCampground});
+router.get("/:id/edit", middleware.checkLotOwnership, function(req, res){
+		Lot.findById(req.params.id, function(err, foundLot){
+		  res.render("lots/edit", {lot: foundLot});
 		});
 });
 
@@ -224,11 +224,11 @@ router.get("/:id/edit", middleware.checkCampgroundOwnership, function(req, res){
 //	});
 //});
 //new code below google maps if bugs remove
-router.put("/:id", middleware.checkCampgroundOwnership, upload.single("imageLocal"), function(req, res){
+router.put("/:id", middleware.checkLotOwnership, upload.single("imageLocal"), function(req, res){
     geocoder.geocode(req.body.location, (err, data) => {
     if (err || data.length === 0) {
       req.flash('error', 'Invalid location');
-      return res.redirect("/campgrounds/" + req.params.id + "/edit");
+      return res.redirect("/lots/" + req.params.id + "/edit");
     }
     let updateData = {
       name: req.body.name,
@@ -254,26 +254,26 @@ router.put("/:id", middleware.checkCampgroundOwnership, upload.single("imageLoca
           url: result.secure_url
         }
         // delete old picture
-        //cloudinary.v2.uploader.destroy(req.campgrounds.image.id, (err, result) => console.log(result));
+        //cloudinary.v2.uploader.destroy(req.lots.image.id, (err, result) => console.log(result));
         // save campground
-        Campground.findByIdAndUpdate(req.params.id, {$set: updateData}, (err, campground) => {
+        Lot.findByIdAndUpdate(req.params.id, {$set: updateData}, (err, lot) => {
           if (err) {
-            req.flash('error', 'Couldn\'t update campground.');
+            req.flash('error', 'Couldn\'t update Lot Listing.');
           } else {
-            req.flash('success', 'Campground updated successfully.');
+            req.flash('success', 'Lot Listing updated successfully.');
           }
-          res.redirect("/campgrounds/" + campground._id); // or req.params.id
+          res.redirect("/lots/" + lot._id); // or req.params.id
         });
       });// cloudinary
     } else { // no new file to upload
-      // save campground
-      Campground.findByIdAndUpdate(req.params.id, {$set: updateData}, (err, campground) => {
+      // save lot listing
+      Lot.findByIdAndUpdate(req.params.id, {$set: updateData}, (err, lot) => {
         if (err) {
-          req.flash('error', 'Couldn\'t update campground.');
+          req.flash('error', 'Couldn\'t update Lot Listing.');
         } else {
-          req.flash('success', 'Campground updated successfully.');
+          req.flash('success', 'Lot Listing updated successfully.');
         }
-        res.redirect("/campgrounds/" + campground._id); // or req.params.id
+        res.redirect("/lots/" + lot._id); // or req.params.id
       });
     } 
   });// geocoder
@@ -302,36 +302,36 @@ router.put("/:id", middleware.checkCampgroundOwnership, upload.single("imageLoca
 
 //========================================================================
 
-//Campground Like Route
+//Lot Listings Like Route
 
 //========================================================================
-// Campground Like Route Starts
+// Lot Like Route Starts
 router.post("/:id/like", middleware.isLoggedIn, function (req, res) {
-    Campground.findById(req.params.id, function (err, foundCampground) {
+    Lot.findById(req.params.id, function (err, foundLot) {
         if (err) {
             console.log(err);
-            return res.redirect("/campgrounds");
+            return res.redirect("/lots");
         }
 
-        // check if req.user._id exists in foundCampground.likes
-        var foundUserLike = foundCampground.likes.some(function (like) {
+        // check if req.user._id exists in foundLot.likes
+        var foundUserLike = foundLot.likes.some(function (like) {
             return like.equals(req.user._id);
         });
 
         if (foundUserLike) {
             // user already liked, removing like
-            foundCampground.likes.pull(req.user._id);
+            foundLot.likes.pull(req.user._id);
         } else {
             // adding the new user like
-            foundCampground.likes.push(req.user._id);
+            foundLot.likes.push(req.user._id);
         }
 
-        foundCampground.save(function (err) {
+        foundLot.save(function (err) {
             if (err) {
                 console.log(err);
-                return res.redirect("/campgrounds");
+                return res.redirect("/lots");
             }
-            return res.redirect("/campgrounds/" + foundCampground._id);
+            return res.redirect("/lots/" + foundLot._id);
         });
     });
 });
@@ -339,7 +339,7 @@ router.post("/:id/like", middleware.isLoggedIn, function (req, res) {
 
 //========================================================================
 
-//DESTROY CAMPGROUND ROUTE
+//DESTROY Lot Listing ROUTE
 
 //========================================================================
 //new code if doesn't work remove add this back
@@ -352,27 +352,27 @@ router.post("/:id/like", middleware.isLoggedIn, function (req, res) {
 //		}
 //	});
 //});
-router.delete("/:id", middleware.checkCampgroundOwnership, function (req, res) {
-    Campground.findById(req.params.id, function (err, campground) {
+router.delete("/:id", middleware.checkLotOwnership, function (req, res) {
+    Lot.findById(req.params.id, function (err, lot) {
         if (err) {
-            res.redirect("/campgrounds");
+            res.redirect("/lots");
         } else {
-            // deletes all comments associated with the campground
-            Comment.remove({"_id": {$in: campground.comments}}, function (err) {
+            // deletes all comments associated with the lots listings
+            Comment.remove({"_id": {$in: lot.comments}}, function (err) {
                 if (err) {
                     console.log(err);
-                    return res.redirect("/campgrounds");
+                    return res.redirect("/lots");
                 }
-                // deletes all reviews associated with the campground
-                Review.remove({"_id": {$in: campground.reviews}}, function (err) {
+                // deletes all reviews associated with the lot listings
+                Review.remove({"_id": {$in: lot.reviews}}, function (err) {
                     if (err) {
                         console.log(err);
-                        return res.redirect("/campgrounds");
+                        return res.redirect("/lots");
                     }
-                    //  delete the campground
-                    campground.remove();
-                    req.flash("success", "Campground deleted successfully!");
-                    res.redirect("/campgrounds");
+                    //  delete the lots review
+                    lot.remove();
+                    req.flash("success", "Lot Review deleted successfully!");
+                    res.redirect("/lots");
                 });
             });
         }

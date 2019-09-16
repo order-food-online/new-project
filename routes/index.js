@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 var passport = require("passport"); 
 var User = require("../models/user");
-var Campground_1 = require("../models/campground");
+var Lot_1 = require("../models/lot");
 var multer = require("multer");
 var cloudinary = require("cloudinary");
 
@@ -90,7 +90,7 @@ router.post("/register", upload.single("image"), function(req, res){
         });
       }
       passport.authenticate("local")(req, res, function() {
-        res.redirect("/campgrounds");
+        res.redirect("/lots");
       });
     });
   } else {
@@ -123,7 +123,7 @@ router.post("/register", upload.single("image"), function(req, res){
             });
           }
           passport.authenticate("local")(req, res, function() {
-            res.redirect("/campgrounds");
+            res.redirect("/lots");
           });
         });
       }, {
@@ -164,17 +164,17 @@ router.get("/login", function(req, res){
 //handing login locic
 router.post("/login", passport.authenticate("local", 
 		{
-			successRedirect: "/campgrounds",
+			successRedirect: "/lots",
 			failureRedirect: "/login"
 		}), function(req, res){
-	      req.flash("success", "Welcome to YelpCamp " + user.username);
+	      req.flash("success", "Welcome to Have Lots Need Lots " + User.username);
 	});
 
 //logout logic route
 router.get("/logout", function(req, res){
 	req.logout();
 	req.flash("success", "Logged you out!");
-	res.redirect("/campgrounds");
+	res.redirect("/lots");
 });
 
 //USER PROFILES
