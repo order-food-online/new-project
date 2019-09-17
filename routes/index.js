@@ -83,6 +83,12 @@ router.get("/sitemap", function(req, res) {
     res.render("sitemap", {page: "sitemap"});
 });
 //========================================================
+//FRONT END PAGES
+//show the AMP FILE page
+router.get("/calgary/toddler-free-toys", function(req, res){
+  res.render("calgary/toddler-free-toys", {page: "calgary/toddler-free-toys"});
+});
+//========================================================
 
 
 //handle sign up logic
