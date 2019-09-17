@@ -69,6 +69,20 @@ router.get("/privacy-policy", function(req, res){
   res.render("privacy-policy", {page: "privacy-policy"});
 });
 //========================================================
+//FRONT END PAGES
+//show the robots page
+router.get("/robots", function(req, res) {
+    res.type("text/plain");
+    res.render("robots", {page: "robots"});
+});
+//========================================================
+//FRONT END PAGES
+//show the robots page
+router.get("/sitemap", function(req, res) {
+    res.type("text/plain");
+    res.render("sitemap", {page: "sitemap"});
+});
+//========================================================
 
 
 //handle sign up logic
