@@ -79,7 +79,7 @@ router.get("/robots", function(req, res) {
 //FRONT END PAGES
 //show the robots page
 router.get("/sitemap", function(req, res) {
-    res.type("text/plain");
+    res.type("text/html");
     res.render("sitemap", {page: "sitemap"});
 });
 //========================================================
