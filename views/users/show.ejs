@@ -102,7 +102,7 @@
           <% lots.forEach(function(lot) { %>
             <div class="col-12 col-lg-6">
               <div class="card shadow-sm mt-3">
-                <a href="/lots/<%= lot._id %>"><img id="lotCard" class="card-img-top" src="<%= lot.image %>"></a> 
+                <a href="/lots/<%= lot._id %>"><img id="lotCard" class="card-img-top" height="100px" width="100px" src="<%= lot.image.url %>"></a> 
                 <div class="card-body">
                   <h5 class="card-title">
                     <a href="/lots/<%= lot._id %>" class="text-capitalize"><%= lot.name %></a>
