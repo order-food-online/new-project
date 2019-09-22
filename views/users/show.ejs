@@ -81,7 +81,19 @@
                 <li class="list-group-item">
                   <i class="fa fa-phone"></i> <strong>Phone: </strong><span class="text-muted"><%= user.phone %>    </span>          
                 </li>
-              <% } %>              
+              <% } %>
+              <% if(!user.firstName) { %>
+              <% } else { %>
+              <li class="list-group-item">
+                  <i class="fa fa-file"></i> &nbsp;<strong>First Name:</strong><span class="text-muted"> <%= user.firstName %></span>  
+              </li>
+              <% } %>
+              <% if(!user.lastName) { %>
+              <% } else { %>
+              <li class="list-group-item">
+                  <i class="fa fa-file"></i> &nbsp;<strong>Last Name:</strong><span class="text-muted"> <%= user.lastName %></span>  
+              </li>
+              <% } %>
               <li class="list-group-item">
                 <i class="fa fa-calendar-alt"></i> <strong>Joined: </strong><span class="text-muted"><%= moment(user.joined).format('LL') %> </span>             
               </li>              
@@ -97,7 +109,7 @@
         </div>
       </div>
       <div class="col-12 col-md-6 col-lg-9">
-        <div class="container text-center"><h1>Lots</h1></div>             
+        <div class="container text-center"><h1>Lot Listings Posted</h1></div>             
         <div class="row" style="float: right;">          
           <% lots.forEach(function(lot) { %>
             <div class="col-12 col-lg-6" style="padding: 0px 0px 20px 20px;">
