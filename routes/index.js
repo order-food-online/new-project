@@ -286,7 +286,8 @@ router.put(
         }
         user.email = req.body.email;
         user.phone = req.body.phone;
-        user.fullName = req.body.fullName;
+        user.firstName = req.body.firstName;
+        user.lastName = req.body.firstName;
         user.save();
         req.flash("success", "Updated your profile!");
         res.redirect("/users/" + req.params.user_id);

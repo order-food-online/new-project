@@ -24,7 +24,7 @@
         <div id="profilePicture" class="card shadow-sm d-none d-md-block">
             <img class="card-img-top" src="<%= user.image %>">
             <div class="card-body">
-                <h5 class="card-title text-capitalize"><%= user.fullName %></h5>
+                <h5 class="card-title text-capitalize" style="color: black;"><%= user.username %></h5>
                 <h6 class="card-subtitle text-muted">                
                   <% if (lots.length === 1) { %>
                     <%= lots.length %> Lot
@@ -74,16 +74,16 @@
           </div>
           <ul class="list-group list-group-flush">
               <li class="list-group-item">
-                <i class="fas fa-envelope"></i> <strong>Email: </strong><a href="mailto:<%= user.email %> "><%= user.email %></a>             
+                <i class="fa fa-envelope"></i> <strong>Email: </strong><a href="mailto:<%= user.email %> "><%= user.email %></a>             
               </li>
               <% if(!user.phone) { %>
               <% } else { %>
                 <li class="list-group-item">
-                  <i class="fas fa-phone"></i> <strong>Phone: </strong><span class="text-muted"><%= user.phone %>    </span>          
+                  <i class="fa fa-phone"></i> <strong>Phone: </strong><span class="text-muted"><%= user.phone %>    </span>          
                 </li>
               <% } %>              
               <li class="list-group-item">
-                <i class="far fa-calendar-alt"></i> <strong>Joined: </strong><span class="text-muted"><%= moment(user.joined).format('LL') %> </span>             
+                <i class="fa fa-calendar-alt"></i> <strong>Joined: </strong><span class="text-muted"><%= moment(user.joined).format('LL') %> </span>             
               </li>              
               <% if (currentUser && user._id.equals(currentUser._id)) { %>
                 <li class="list-group-item d-flex justify-content-center">
@@ -98,9 +98,9 @@
       </div>
       <div class="col-12 col-md-6 col-lg-9">
         <div class="container text-center"><h1>Lots</h1></div>             
-        <div class="row">          
+        <div class="row" style="float: right;">          
           <% lots.forEach(function(lot) { %>
-            <div class="col-12 col-lg-6">
+            <div class="col-12 col-lg-6" style="padding: 0px 0px 20px 20px;">
               <div class="card shadow-sm mt-3">
                 <a href="/lots/<%= lot._id %>"><img id="lotCard" class="card-img-top" height="100px" width="100px" src="<%= lot.image.url %>"></a> 
                 <div class="card-body">
