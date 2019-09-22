@@ -312,6 +312,9 @@ router.delete("/users/:user_id", middleware.checkProfileOwnership, function(
     } else {
       try {
         await cloudinary.v2.uploader.destroy(user.imageId);
+        user.reviews.remove();
+        user.comments.remove();
+        user.lots.remove();
         user.remove();
         res.redirect("/");
       } catch (err) {

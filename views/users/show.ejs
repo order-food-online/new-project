@@ -87,12 +87,12 @@
               </li>              
               <% if (currentUser && user._id.equals(currentUser._id)) { %>
                 <li class="list-group-item d-flex justify-content-center">
-                  <a class="btn btn-warning btn-sm float-left mr-1" href="/users/<%= user._id %>/edit">Edit Profile</a>
+                  <p>Edit Your User Profile &nbsp;<a class="btn btn-warning btn-sm float-left mr-1" href="/users/<%= user._id %>/edit">Edit Profile</a></p>
                   <form class="float-left" action="/users/<%= user._id %>?_method=DELETE" method="POST">
-                    <button type="submit" class="btn btn-danger btn-sm">Delete Account</button>
+                    <p>Delete Your User Profile Account&nbsp;<button type="submit" class="btn btn-danger btn-sm">Delete Account</button></p>
                   </form>
                 </li>
-              <% } %>             
+              <% } %> 
           </ul>
         </div>
       </div>
@@ -119,9 +119,9 @@
                     <% if(!lot.comments.length) { %>
                       <span class="text-muted">No Reviews</span>
                     <% } else { %>
-                      <% var stars = ['<i class="far fa-star text-danger"></i>', '<i class="far fa-star text-danger"></i>', '<i class="far fa-star text-danger"></i>', '<i class="far fa-star text-danger"></i>', '<i class="far fa-star text-danger"></i>'] %>
+                      <% var stars = ['<i class="fa fa-star text-danger"></i>', '<i class="fa fa-star text-danger"></i>', '<i class="fa fa-star text-danger"></i>', '<i class="fa fa-star text-danger"></i>', '<i class="fa fa-star text-danger"></i>'] %>
                       <% for(var i = 0; i < Math.round(lot.rateAvg); i++) { %>
-                          <% stars[i] = '<i class="fas fa-star text-danger"></i>' %>
+                          <% stars[i] = '<i class="fa fa-star text-danger"></i>' %>
                       <% } %> 
                       <% for(var i = 0; i < stars.length; i++) { %>
                         <%- stars[i] %>
