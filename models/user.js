@@ -7,8 +7,10 @@ var UserSchema = new mongoose.Schema({
 	image: String,
 	imageId: String,
 	firstName: String,
+	phone: String,
 	lastName: String,
 	email: String,
+	joined: { type: Date, default: Date.now },
 	isAdmin: {type: Boolean, default: false}
 });
 

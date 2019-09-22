@@ -197,7 +197,7 @@ router.get("/:id", function(req, res){
 
 //=======================================================================
 
-//EDIT CAMPGROUND ROUTE
+//EDIT LOTS ROUTE
 
 //=======================================================================
 
@@ -209,7 +209,7 @@ router.get("/:id/edit", middleware.checkLotOwnership, function(req, res){
 
 //========================================================================
 
-//UPDATE CAMPGROUND ROUTE
+//UPDATE LOTS ROUTE
 
 //========================================================================
 //router.put("/:id", middleware.checkCampgroundOwnership, function(req, res){

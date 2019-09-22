@@ -1,6 +1,7 @@
 var Lot = require("../models/lot");
 var Comment = require("../models/comment");
 var Review = require("../models/review");
+var User = require("../models/user");
 // all the middleware goes here
 var middlewareObj = {};
 
@@ -106,6 +107,21 @@ middlewareObj.isLoggedIn = function(req, res, next){
 	req.flash("error", "You need to be logged in to do that!");
 	res.redirect("/login");
 }
+
+middlewareObj.checkProfileOwnership = function(req, res, next) {
+  User.findById(req.params.user_id, function(err, foundUser) {
+    if (err || !foundUser) {
+      req.flash("error", "Sorry, that user doesn't exist");
+      res.redirect("/lots");
+    } else if (foundUser._id.equals(req.user._id) || req.user.isAdmin) {
+      req.user = foundUser;
+      next();
+    } else {
+      req.flash("error", "You don't have permission to do that!");
+      res.redirect("/lots/" + req.params.id);
+    }
+  });
+};
 
 //middleware exports router
 module.exports = middlewareObj;
