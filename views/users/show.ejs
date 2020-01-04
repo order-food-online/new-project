@@ -7,9 +7,6 @@
 			<img src="<!--%= user.image %>" alt="user profile image">
 			<div class="caption"><a href="mailto:<!--%= user.email %>"><!--%= user.email %></a></div>
 		</div>
-		 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut 	 enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-		
-	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut       enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 	</div>
 		<div class="col-md-8">
 	   </div>
@@ -26,10 +23,10 @@
             <div class="card-body">
                 <h5 class="card-title text-capitalize" style="color: black;"><%= user.username %></h5>
                 <h6 class="card-subtitle text-muted">                
-                  <% if (lots.length === 1) { %>
-                    <%= lots.length %> Lot
+                  <% if (restaurants.length === 1) { %>
+                    <%= restaurants.length %> Restaurant
                   <% } else { %>
-                    <%= lots.length %> Lot
+                    <%= restaurants.length %> Restaurant
                   <% } %> 
                   <div><%= reviews.length %> Reviews</div>
                 </h6> 
@@ -45,10 +42,10 @@
                 <div class="card-body">
                   <h5 class="card-title text-capitalize"><%= user.fullName %></h5>
                   <h6 class="card-subtitle text-muted">                    
-                    <% if (lots.length === 1) { %>
-                      <%= lots.length %> Lots
+                    <% if (restaurants.length === 1) { %>
+                      <%= restaurants.length %> Restaurant Listings
                     <% } else { %>
-                      <%= lots.length %> Lots
+                      <%= restaurants.length %> Restaurant Listings
                     <% } %>
                     <div>
                       <% if (reviews.length === 1) { %>
@@ -108,40 +105,57 @@
           </ul>
         </div>
       </div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
       <div class="col-12 col-md-6 col-lg-9">
-        <div class="container text-center"><h1>Lot Listings Posted</h1></div>             
-        <div class="row" style="float: right;">          
-          <% lots.forEach(function(lot) { %>
-            <div class="col-12 col-lg-6" style="padding: 0px 0px 20px 20px;">
+        <div class="container text-center"><h1>Restaurant Listings Posted</h1></div>             
+        <div class="row" style="float: center;">          
+          <% restaurants.forEach(function(restaurant) { %>
+            <div class="col-12 col-lg-4" style="padding: 0px 0px 20px 20px;">
               <div class="card shadow-sm mt-3">
-                <a href="/lots/<%= lot._id %>"><img id="lotCard" class="card-img-top" height="100px" width="100px" src="<%= lot.image.url %>"></a> 
+                <a href="/restaurants/<%= restaurant._id %>"><img id="restaurantCard" class="card-img-top" height="100px" width="100px" src="<%= restaurant.image.url %>"></a> 
                 <div class="card-body">
                   <h5 class="card-title">
-                    <a href="/lots/<%= lot._id %>" class="text-capitalize"><%= lot.name %></a>
-                    <% if (lot.price > 100) { %>
+                    <a href="/restaurants/<%= restaurant._id %>" class="text-capitalize"><%= restaurant.restaurant_name %></a>
+                    <% if (restaurant.price > 100) { %>
                       <small class="float-right text-muted">$$$</small>
-                    <% } else if (lots.price > 50) { %>
+                    <% } else if (restaurant.price > 50) { %>
                       <small class="float-right text-muted">$$</small>
                     <% } else { %>
-                      <small class="float-right text-muted">$</small>
+                      <small class="float-right text-muted"><%= restaurant.price %></small>
                     <% } %>
-                                      
                   </h5>              
                   <h6 class="card-subtitle">
-                    <% if(!lot.comments.length) { %>
+                    <% if(!restaurant.reviews.length) { %>
                       <span class="text-muted">No Reviews</span>
                     <% } else { %>
                       <% var stars = ['<i class="fa fa-star text-danger"></i>', '<i class="fa fa-star text-danger"></i>', '<i class="fa fa-star text-danger"></i>', '<i class="fa fa-star text-danger"></i>', '<i class="fa fa-star text-danger"></i>'] %>
-                      <% for(var i = 0; i < Math.round(lot.rateAvg); i++) { %>
+                      <% for(var i = 0; i < Math.round(restaurant.rateAvg); i++) { %>
                           <% stars[i] = '<i class="fa fa-star text-danger"></i>' %>
                       <% } %> 
                       <% for(var i = 0; i < stars.length; i++) { %>
                         <%- stars[i] %>
                       <% } %>
-                      <% if (lot.comments.length === 1) { %>
-                        <span class="text-muted"><%= lot.comments.length %> Review</span> 
+                      <% if (restaurant.reviews.length === 1) { %>
+                        <span class="text-muted"><%= restaurant.reviews.length %> Review</span> 
                       <% } else { %>
-                        <span class="text-muted"><%= lot.comments.length %> Reviews</span> 
+                        <span class="text-muted"><%= restaurant.reviews.length %> Reviews</span> 
                       <% } %>                
                     <% } %>   
                   </h6> 

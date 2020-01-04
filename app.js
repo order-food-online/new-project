@@ -7,17 +7,19 @@ var flash                   = require("connect-flash");
 var passport 				= require("passport");
 var LocalStrategy 			= require("passport-local");
 var methodOverride          = require("method-override");
-var Lot				        = require("./models/lot");
+var Restaurant				= require("./models/restaurant");
 var Comment 				= require("./models/comment");
 var User 					= require("./models/user");
 var seedDB 					= require("./seeds");
 var commentRoutes 			= require("./routes/comments");
-var lotRoutes 		        = require("./routes/lot");
+var restaurantRoutes 		= require("./routes/restaurant");
 var indexRoutes 			= require("./routes/index");
 var reviewRoutes			= require("./routes/reviews");
+var sphp					= require("sphp");
+
 app.locals.moment = require("moment");
 //mongo altas
-mongoose.connect('mongodb+srv://jamespostrasija:joejoe12345@cluster0-fchnu.mongodb.net/testretryWrites=true', {
+mongoose.connect('mongodb+srv://joejoe11:joejoe11@cluster0-ablik.mongodb.net/testretryWrites=true', {
 	useNewUrlParser: true,
 	useCreateIndex: true
 }).then(() => {
@@ -25,6 +27,8 @@ mongoose.connect('mongodb+srv://jamespostrasija:joejoe12345@cluster0-fchnu.mongo
 }).catch(err => {
 	console.log('ERROR', err.message);
 });
+
+
 // Load a plugin.
 //code for connecting data part 1
 //var url = process.env.DATABASEURL || "mongodb://localhost/yelp_camp_v10";
@@ -35,6 +39,8 @@ mongoose.connect('mongodb+srv://jamespostrasija:joejoe12345@cluster0-fchnu.mongo
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname  + "/public"));
+//php files
+app.use(sphp.express("public/"));
 app.use(methodOverride("_method"));
 app.use(flash());
 // seedDB(); //seed the database
@@ -59,14 +65,14 @@ app.use(function(req, res, next){
 });
 // requiring routes
 app.use("/", indexRoutes);
-app.use("/lots", lotRoutes);
-app.use("/lots/:id/comments", commentRoutes);
-app.use("/lots/:id/reviews", reviewRoutes);
+app.use("/restaurants", restaurantRoutes);
+app.use("/restaurants/:id/comments", commentRoutes);
+app.use("/restaurants/:id/reviews", reviewRoutes);
 
 //server connection for server
 //app.listen(8080, () => {
 //	console.log("Have Lots Need Lots Has Started the Server");
 //});
 app.listen(process.env.PORT, process.env.IP, function(){
-   console.log("The Have Lots Need Lots Server Has Started!");
+   console.log("Order Food Online Server Has Started!");
 });

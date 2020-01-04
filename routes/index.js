@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 var passport = require("passport"); 
 var User = require("../models/user");
-var Lot = require("../models/lot");
+var Restaurant = require("../models/restaurant");
 var Comment = require("../models/comment");
 var middleware = require("../middleware");
 var multer = require("multer");
@@ -86,9 +86,8 @@ router.get("/sitemap", function(req, res) {
 });
 //========================================================
 //FRONT END PAGES
-//show the AMP FILE page
-router.get("/calgary/toddler-free-toys", function(req, res){
-  res.render("calgary/toddler-free-toys", {page: "calgary/toddler-free-toys"});
+router.get("/menus/new", function(req, res){
+	res.render("menus/new", {page: "menus/new"});	
 });
 //========================================================
 
@@ -112,7 +111,7 @@ router.post("/register", upload.single("image"), function(req, res){
         });
       }
       passport.authenticate("local")(req, res, function() {
-        res.redirect("/lots");
+        res.redirect("/restaurants");
       });
     });
   } else {
@@ -145,7 +144,7 @@ router.post("/register", upload.single("image"), function(req, res){
             });
           }
           passport.authenticate("local")(req, res, function() {
-            res.redirect("/lots");
+            res.redirect("/restaurants");
           });
         });
       }, {
@@ -172,7 +171,7 @@ router.post("/register", upload.single("image"), function(req, res){
 			//return res.render("register");
 		//}
 	//	passport.authenticate("local")(req, res, function(){
-		//	req.flash("success", "Welcome to Have Lots Need Lots " + user.username);
+		//	req.flash("success", "Welcome to Order Food Online " + user.username);
 		//	res.redirect("/campgrounds");
 	//	});
 	//});
@@ -186,17 +185,17 @@ router.get("/login", function(req, res){
 //handing login locic
 router.post("/login", passport.authenticate("local", 
 		{
-			successRedirect: "/lots",
+			successRedirect: "/restaurants",
 			failureRedirect: "/login"
 		}), function(req, res){
-	      req.flash("success", "Welcome to Have Lots Need Lots " + User.username);
+	      req.flash("success", "Welcome to Order Food Online " + User.username);
 	});
 
 //logout logic route
 router.get("/logout", function(req, res){
 	req.logout();
 	req.flash("success", "Logged you out!");
-	res.redirect("/lots");
+	res.redirect("/restaurants");
 });
 
 //USER PROFILES
@@ -217,10 +216,10 @@ router.get("/users/:user_id", function(req, res) {
       req.flash("error", "This user doesn't exist");
       return res.render("error");
     }
-    Lot.find()
+    Restaurant.find()
       .where("author.id")
       .equals(foundUser._id)
-      .exec(function(err, lots) {
+      .exec(function(err, restaurants) {
         if (err) {
           req.flash("error", "Something went wrong");
           res.render("error");
@@ -235,7 +234,7 @@ router.get("/users/:user_id", function(req, res) {
             }
             res.render("users/show", {
               user: foundUser,
-              lots: lots,
+              restaurants: restaurants,
               reviews: ratedCount
             });
           });

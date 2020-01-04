@@ -1,40 +1,40 @@
 var express = require("express");
 var router = express.Router({mergeParams: true});
-var Lot = require("../models/lot");
+var Restaurant = require("../models/restaurant");
 var Review = require("../models/review");
 var middleware = require("../middleware");
 
 // Reviews Index
 router.get("/", function (req, res) {
-    Lot.findById(req.params.id).populate({
+    Restaurant.findById(req.params.id).populate({
         path: "reviews",
         options: {sort: {createdAt: -1}} // sorting the populated reviews array to show the latest first
-    }).exec(function (err, lot) {
-        if (err || !lot) {
+    }).exec(function (err, restaurant) {
+        if (err || !restaurant) {
             req.flash("error", err.message);
             return res.redirect("back");
         }
-        res.render("reviews/index", {lot: lot});
+        res.render("reviews/index", {restaurant: restaurant});
     });
 });
 
 // Reviews New
 router.get("/new", middleware.isLoggedIn, middleware.checkReviewExistence, function (req, res) {
-    // middleware.checkReviewExistence checks if a user already reviewed the lot listing, only one review per user is allowed
-    Lot.findById(req.params.id, function (err, lot) {
+    // middleware.checkReviewExistence checks if a user already reviewed the restaurant listing, only one review per user is allowed
+    Restaurant.findById(req.params.id, function (err, restaurant) {
         if (err) {
             req.flash("error", err.message);
             return res.redirect("back");
         }
-        res.render("reviews/new", {lot: lot});
+        res.render("reviews/new", {restaurant: restaurant});
 
     });
 });
 
 // Reviews Create
 router.post("/", middleware.isLoggedIn, middleware.checkReviewExistence, function (req, res) {
-    //lookup lot listings using ID
-    Lot.findById(req.params.id).populate("reviews").exec(function (err, lot) {
+    //lookup restaurants listings using ID
+    Restaurant.findById(req.params.id).populate("reviews").exec(function (err, restaurant) {
         if (err) {
             req.flash("error", err.message);
             return res.redirect("back");
@@ -44,19 +44,19 @@ router.post("/", middleware.isLoggedIn, middleware.checkReviewExistence, functio
                 req.flash("error", err.message);
                 return res.redirect("back");
             }
-            //add author username/id and associated lot listing to the review
+            //add author username/id and associated restaurant listing to the review
             review.author.id = req.user._id;
             review.author.username = req.user.username;
-            review.lot = lot;
+            review.restaurant = restaurant;
             //save review
             review.save();
-            lot.reviews.push(review);
+            restaurant.reviews.push(review);
             // calculate the new average review for the campground
-            lot.rating = calculateAverage(lot.reviews);
+            restaurant.rating = calculateAverage(restaurant.reviews);
             //save campground
-            lot.save();
+            restaurant.save();
             req.flash("success", "Your review has been successfully added.");
-            res.redirect('/lots/' + lot._id);
+            res.redirect('/restaurants/' + restaurant._id);
         });
     });
 });
@@ -68,7 +68,7 @@ router.get("/:review_id/edit", middleware.checkReviewOwnership, function (req, r
             req.flash("error", err.message);
             return res.redirect("back");
         }
-        res.render("reviews/edit", {lot_id: req.params.id, review: foundReview});
+        res.render("reviews/edit", {restaurant_id: req.params.id, review: foundReview});
     });
 });
 
@@ -79,17 +79,17 @@ router.put("/:review_id", middleware.checkReviewOwnership, function (req, res) {
             req.flash("error", err.message);
             return res.redirect("back");
         }
-        Lot.findById(req.params.id).populate("reviews").exec(function (err, lot) {
+        Restaurant.findById(req.params.id).populate("reviews").exec(function (err, restaurant) {
             if (err) {
                 req.flash("error", err.message);
                 return res.redirect("back");
             }
-            // recalculate lots listings average
-            lot.rating = calculateAverage(lot.reviews);
+            // recalculate restaurants listings average
+            restaurant.rating = calculateAverage(restaurant.reviews);
             //save changes
-            lot.save();
+            restaurant.save();
             req.flash("success", "Your review was successfully edited.");
-            res.redirect('/lots/' + lot._id);
+            res.redirect('/restaurants/' + restaurant._id);
         });
     });
 });
@@ -101,17 +101,17 @@ router.delete("/:review_id", middleware.checkReviewOwnership, function (req, res
             req.flash("error", err.message);
             return res.redirect("back");
         }
-        Lot.findByIdAndUpdate(req.params.id, {$pull: {reviews: req.params.review_id}}, {new: true}).populate("reviews").exec(function (err, lot) {
+        Restaurant.findByIdAndUpdate(req.params.id, {$pull: {reviews: req.params.review_id}}, {new: true}).populate("reviews").exec(function (err, restaurant) {
             if (err) {
                 req.flash("error", err.message);
                 return res.redirect("back");
             }
-            // recalculate lot listing average
-            lot.rating = calculateAverage(lot.reviews);
+            // recalculate restaurant listing average
+            restaurant.rating = calculateAverage(restaurant.reviews);
             //save changes
-            lot.save();
+            restaurant.save();
             req.flash("success", "Your review was deleted successfully.");
-            res.redirect("/lots/" + req.params.id);
+            res.redirect("/restaurants/" + req.params.id);
         });
     });
 });

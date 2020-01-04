@@ -21,7 +21,7 @@ h6 {
 header.masthead {
   position: relative;
   background-color: #343a40;
-  background: url("https://aws-website-amp-bbq2v.s3.amazonaws.com/calgary_toys_kids.jpg") no-repeat center center;
+  background: url("https://aws-website-amp-bbq2v.s3.amazonaws.com/takeout-ordering.jpg") no-repeat center center;
   background-size: cover;
   padding-top: 8rem;
   padding-bottom: 8rem;
@@ -125,3 +125,7 @@ footer.footer {
   padding-top: 4rem;
   padding-bottom: 4rem;
 }
+.bg-white {
+  background-color: #e72525;
+}
+

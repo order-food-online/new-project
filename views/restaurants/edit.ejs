@@ -1,0 +1,1795 @@
+<% include ../partials/header %>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>
+
+
+
+<style type="text/css">
+	
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f1f1f1;
+}
+label {
+  font-size: 14px;
+}
+#regForm {
+  background-color: #ffffff;
+  margin: 100px auto;
+  font-family: Raleway;
+  padding: 40px;
+  width: 100%;
+  min-width: 300px;
+}
+
+h1 {
+  text-align: center;  
+}
+
+input {
+  padding: 10px;
+  width: 100%;
+  font-size: 17px;
+  font-family: Raleway;
+  border: 1px solid #aaaaaa;
+}
+
+/* Mark input boxes that gets an error on validation: */
+input.invalid {
+  background-color: #ffdddd;
+}
+
+/* Hide all steps by default: */
+.form-group {
+  display: none;
+}
+
+button {
+  background-color: #e72525;
+  color: #ffffff;
+  border: none;
+  padding: 15px 25px;
+  font-size: 17px;
+  font-family: Raleway;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+#prevBtn {
+  background-color: #e72525;
+}
+
+/* Make circles that indicate the steps of the form: */
+.step {
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbbbbb;
+  border: none;  
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.5;
+}
+
+.step.active {
+  opacity: 1;
+}
+
+/* Mark the steps that are finished and valid: */
+.step.finish {
+  background-color: #e72525;
+}
+textarea {
+  width: 100%;
+  height: 200px;
+  font-size: 14px;
+}
+
+</style>	
+<div class="row">
+		<h1 style="text-align: center;"><span class="glyphicon glyphicon-edit"></span> Edit <strong><%= restaurant.restaurant_name %> Location</strong></h1>
+		<div style="width: 100%;margin: 25px auto;">
+			<form action="/restaurants/<%= restaurant._id %>/?_method=PUT" method="POST" enctype="multipart/form-data" class="input-append" id="regForm">
+				<div class="form-group">
+					<label for="restaurant_name">RESTAURANT NAME</label>
+					<input class="form-control" type="text" name="restaurant_name" value="<%= restaurant.restaurant_name %>" oninput="this.className = ''">
+				<br>
+    				<label for="restaurant_telephone">RESTAURANT TELEPHONE NUMBER <font color="red">*</font></label>
+					<input class="form-control"  oninput="this.className = ''" type="text" name="restaurant_telephone" placeholder="ie-555-555-5555"  value="<%= restaurant.restaurant_telephone %>"required>
+					 <br>
+					 <br>
+    			<label for="restaurant_address">RESTAURANT ADDRESS <font color="red">*</font></label>
+				<input class="form-control"  oninput="this.className = ''"  type="text" name="restaurant_address" placeholder="ie. 123 King Street E" value="<%= restaurant.restaurant_address %>"required>
+    			<br>
+    			<br>	
+    			<label for="price">RESTAURANT AVERAGE PRICES <font color="red">*</font></label>
+				<input class="form-control" oninput="this.className = ''" type="text" name="price" placeholder="ie. $10.00-$50.00" value="<%= restaurant.price %>" required>
+    			<br>
+    			<br>
+    			<label for="cuisine_type">TYPE OF CUISINE AT LOCATION <font color="red">*</font></label>
+    			<br>
+				<select name="cuisine_type" oninput="this.className = ''" class="form-control"  value="<%= restaurant.cuisine_type %>" multiple required>
+					<option value="Asian">Asian</option>
+					<option value="Indian">Indian</option>
+					<option value="Vietnamese">Vietnamese</option>
+					<option value="Italian">Italian</option>
+					<option value="Greek">Greek</option>
+					<option value="French">French</option>
+					<option value="Fast Food">Fast Food</option>
+					<option value="Canadian">Canadian</option>
+					<option value="Chinese Food">Chinese Food</option>
+					<option value="Italian">Italian</option>
+					<option value="Sushi">Sushi</option>
+					<option value="Bakery">Bakery</option>
+					<option value="Cantonese">Cantonese</option>
+					<option value="Deli">Deli</option>
+					<option value="Middle Eastern">Middle Eastern</option>
+					<option value="Diner">Diner</option>
+					<option value="Ethiopian">Ethiopian</option>
+					<option value="Finger Food">Finger Food</option>
+					<option value="German">German</option>
+					<option value="Hawaiian">Hawaiian</option>
+					<option value="Iranian">Iranian</option>
+					<option value="Jamaican">Jamaican</option>
+					<option value="Kebab">Kebab</option>
+					<option value="Lebanese">Lebanese</option>
+					<option value="Mexican">Mexican</option>
+					<option value="Mongolian">Mongolian</option>
+					<option value="Patisserie">Patisserie</option>
+					<option value="Polish">Polish</option>
+					<option value="Spanish">Spanish</option>
+					<option value="Thai">Thai</option>
+					<option value="Vegetarian">Vegetarian</option>
+					<option value="African">African</option>
+					<option value="Argentine">Argentine</option>
+					<option value="Asian Fusion">Asian Fusion</option>
+					<option value="Bar Food">Bar Food</option>
+					<option value="Brazilian">Brazilian</option>
+					<option value="Cajun">Cajun</option>
+					<option value="Caribbean">Caribbean</option>
+					<option value="Coffee and Tea">Coffee and Tea</option>
+					<option value="Desserts">Desserts</option>
+					<option value="Drinks Only">Drinks Only</option>
+					<option value="European">European</option>
+					<option value="Fish and Chips">Fish and Chips</option>
+					<option value="Frozen Yogurt">Frozen Yogurt</option>
+					<option value="Healthy Food">Healthy Food</option>
+					<option value="Irish">Irish</option>
+					<option value="Japanese">Japanese</option>
+					<option value="Korean">Korean</option>
+					<option value="Malaysian">Malaysian</option>
+					<option value="Moroccan">Moroccan</option>
+					<option value="Portuguese">Portuguese</option>
+					<option value="Raw Meats">Raw Meats</option>
+					<option value="Sandwich">Sandwich</option>
+					<option value="Southern">Southern</option>
+					<option value="Sri Lankan">Sri Lankan</option>
+					<option value="Taiwanese">Taiwanese</option>
+					<option value="Teriyaki">Teriyaki</option>
+					<option value="Turkish">Turkish</option>
+					<option value="American">American</option>
+					<option value="Armenian">Armenian</option>
+					<option value="BBQ">BBQ</option>
+					<option value="Beverages">Beverages</option>
+					<option value="Breakfast">Breakfast</option>
+					<option value="Burger">Burger</option>
+					<option value="Central Asian">Central Asian</option>
+					<option value="Cuban">Cuban</option>
+					<option value="Dim Sum">Dim Sum</option>
+					<option value="Eastern European">Eastern European</option>
+					<option value="Filipino">Filipino</option>
+					<option value="Fusion">Fusion</option>
+					<option value="Grill">Grill</option>
+					<option value="Hungarian">Hungarian</option>
+					<option value="Indonesian">Indonesian</option>
+					<option value="Juices">Juices</option>
+					<option value="Latin American">Latin American</option>
+					<option value="Mediterranean">Mediterranean</option>
+					<option value="Mediterranean">Mediterranean</option>
+					<option value="Pakistani">Pakistani</option>
+					<option value="Pizza">Pizza</option>
+					<option value="Pub Food">Pub Food</option>
+					<option value="Salad">Salad</option>
+					<option value="Seafood">Seafood</option>
+					<option value="Southwestern">Southwestern</option>
+					<option value="Steak">Steak</option>
+					<option value="Tapas">Tapas</option>
+					<option value="Ukrainian">Ukrainian</option>
+					<option value="Other">Other</option>
+				</select>
+				<br>
+				<label for="cuisine_type1">Second Cuisine Type<font color="red">*</font></label>
+    			<br>
+				<select name="cuisine_type1" class="form-control" oninput="this.className = ''" value="<%= restaurant.cuisine_type1 %>" multiple required>
+					<option value="Asian">Asian</option>
+					<option value="Indian">Indian</option>
+					<option value="Vietnamese">Vietnamese</option>
+					<option value="Italian">Italian</option>
+					<option value="Greek">Greek</option>
+					<option value="French">French</option>
+					<option value="Fast Food">Fast Food</option>
+					<option value="Canadian">Canadian</option>
+					<option value="Chinese Food">Chinese Food</option>
+					<option value="Italian">Italian</option>
+					<option value="Sushi">Sushi</option>
+					<option value="Bakery">Bakery</option>
+					<option value="Cantonese">Cantonese</option>
+					<option value="Deli">Deli</option>
+					<option value="Middle Eastern">Middle Eastern</option>
+					<option value="Diner">Diner</option>
+					<option value="Ethiopian">Ethiopian</option>
+					<option value="Finger Food">Finger Food</option>
+					<option value="German">German</option>
+					<option value="Hawaiian">Hawaiian</option>
+					<option value="Iranian">Iranian</option>
+					<option value="Jamaican">Jamaican</option>
+					<option value="Kebab">Kebab</option>
+					<option value="Lebanese">Lebanese</option>
+					<option value="Mexican">Mexican</option>
+					<option value="Mongolian">Mongolian</option>
+					<option value="Patisserie">Patisserie</option>
+					<option value="Polish">Polish</option>
+					<option value="Spanish">Spanish</option>
+					<option value="Thai">Thai</option>
+					<option value="Vegetarian">Vegetarian</option>
+					<option value="African">African</option>
+					<option value="Argentine">Argentine</option>
+					<option value="Asian Fusion">Asian Fusion</option>
+					<option value="Bar Food">Bar Food</option>
+					<option value="Brazilian">Brazilian</option>
+					<option value="Cajun">Cajun</option>
+					<option value="Caribbean">Caribbean</option>
+					<option value="Coffee and Tea">Coffee and Tea</option>
+					<option value="Desserts">Desserts</option>
+					<option value="Drinks Only">Drinks Only</option>
+					<option value="European">European</option>
+					<option value="Fish and Chips">Fish and Chips</option>
+					<option value="Frozen Yogurt">Frozen Yogurt</option>
+					<option value="Healthy Food">Healthy Food</option>
+					<option value="Irish">Irish</option>
+					<option value="Japanese">Japanese</option>
+					<option value="Korean">Korean</option>
+					<option value="Malaysian">Malaysian</option>
+					<option value="Moroccan">Moroccan</option>
+					<option value="Portuguese">Portuguese</option>
+					<option value="Raw Meats">Raw Meats</option>
+					<option value="Sandwich">Sandwich</option>
+					<option value="Southern">Southern</option>
+					<option value="Sri Lankan">Sri Lankan</option>
+					<option value="Taiwanese">Taiwanese</option>
+					<option value="Teriyaki">Teriyaki</option>
+					<option value="Turkish">Turkish</option>
+					<option value="American">American</option>
+					<option value="Armenian">Armenian</option>
+					<option value="BBQ">BBQ</option>
+					<option value="Beverages">Beverages</option>
+					<option value="Breakfast">Breakfast</option>
+					<option value="Burger">Burger</option>
+					<option value="Central Asian">Central Asian</option>
+					<option value="Cuban">Cuban</option>
+					<option value="Dim Sum">Dim Sum</option>
+					<option value="Eastern European">Eastern European</option>
+					<option value="Filipino">Filipino</option>
+					<option value="Fusion">Fusion</option>
+					<option value="Grill">Grill</option>
+					<option value="Hungarian">Hungarian</option>
+					<option value="Indonesian">Indonesian</option>
+					<option value="Juices">Juices</option>
+					<option value="Latin American">Latin American</option>
+					<option value="Mediterranean">Mediterranean</option>
+					<option value="Mediterranean">Mediterranean</option>
+					<option value="Pakistani">Pakistani</option>
+					<option value="Pizza">Pizza</option>
+					<option value="Pub Food">Pub Food</option>
+					<option value="Salad">Salad</option>
+					<option value="Seafood">Seafood</option>
+					<option value="Southwestern">Southwestern</option>
+					<option value="Steak">Steak</option>
+					<option value="Tapas">Tapas</option>
+					<option value="Ukrainian">Ukrainian</option>
+					<option value="Other">Other</option>
+				</select>
+				<br>
+				<label for="cuisine_type2">Third Cuisine Type<font color="red">*</font></label>
+    			<br>
+				<select name="cuisine_type2" class="form-control" oninput="this.className = ''" value="<%= restaurant.cuisine_type2 %>" multiple required>
+					<option value="Asian">Asian</option>
+					<option value="Indian">Indian</option>
+					<option value="Vietnamese">Vietnamese</option>
+					<option value="Italian">Italian</option>
+					<option value="Greek">Greek</option>
+					<option value="French">French</option>
+					<option value="Fast Food">Fast Food</option>
+					<option value="Canadian">Canadian</option>
+					<option value="Chinese Food">Chinese Food</option>
+					<option value="Italian">Italian</option>
+					<option value="Sushi">Sushi</option>
+					<option value="Bakery">Bakery</option>
+					<option value="Cantonese">Cantonese</option>
+					<option value="Deli">Deli</option>
+					<option value="Middle Eastern">Middle Eastern</option>
+					<option value="Diner">Diner</option>
+					<option value="Ethiopian">Ethiopian</option>
+					<option value="Finger Food">Finger Food</option>
+					<option value="German">German</option>
+					<option value="Hawaiian">Hawaiian</option>
+					<option value="Iranian">Iranian</option>
+					<option value="Jamaican">Jamaican</option>
+					<option value="Kebab">Kebab</option>
+					<option value="Lebanese">Lebanese</option>
+					<option value="Mexican">Mexican</option>
+					<option value="Mongolian">Mongolian</option>
+					<option value="Patisserie">Patisserie</option>
+					<option value="Polish">Polish</option>
+					<option value="Spanish">Spanish</option>
+					<option value="Thai">Thai</option>
+					<option value="Vegetarian">Vegetarian</option>
+					<option value="African">African</option>
+					<option value="Argentine">Argentine</option>
+					<option value="Asian Fusion">Asian Fusion</option>
+					<option value="Bar Food">Bar Food</option>
+					<option value="Brazilian">Brazilian</option>
+					<option value="Cajun">Cajun</option>
+					<option value="Caribbean">Caribbean</option>
+					<option value="Coffee and Tea">Coffee and Tea</option>
+					<option value="Desserts">Desserts</option>
+					<option value="Drinks Only">Drinks Only</option>
+					<option value="European">European</option>
+					<option value="Fish and Chips">Fish and Chips</option>
+					<option value="Frozen Yogurt">Frozen Yogurt</option>
+					<option value="Healthy Food">Healthy Food</option>
+					<option value="Irish">Irish</option>
+					<option value="Japanese">Japanese</option>
+					<option value="Korean">Korean</option>
+					<option value="Malaysian">Malaysian</option>
+					<option value="Moroccan">Moroccan</option>
+					<option value="Portuguese">Portuguese</option>
+					<option value="Raw Meats">Raw Meats</option>
+					<option value="Sandwich">Sandwich</option>
+					<option value="Southern">Southern</option>
+					<option value="Sri Lankan">Sri Lankan</option>
+					<option value="Taiwanese">Taiwanese</option>
+					<option value="Teriyaki">Teriyaki</option>
+					<option value="Turkish">Turkish</option>
+					<option value="American">American</option>
+					<option value="Armenian">Armenian</option>
+					<option value="BBQ">BBQ</option>
+					<option value="Beverages">Beverages</option>
+					<option value="Breakfast">Breakfast</option>
+					<option value="Burger">Burger</option>
+					<option value="Central Asian">Central Asian</option>
+					<option value="Cuban">Cuban</option>
+					<option value="Dim Sum">Dim Sum</option>
+					<option value="Eastern European">Eastern European</option>
+					<option value="Filipino">Filipino</option>
+					<option value="Fusion">Fusion</option>
+					<option value="Grill">Grill</option>
+					<option value="Hungarian">Hungarian</option>
+					<option value="Indonesian">Indonesian</option>
+					<option value="Juices">Juices</option>
+					<option value="Latin American">Latin American</option>
+					<option value="Mediterranean">Mediterranean</option>
+					<option value="Mediterranean">Mediterranean</option>
+					<option value="Pakistani">Pakistani</option>
+					<option value="Pizza">Pizza</option>
+					<option value="Pub Food">Pub Food</option>
+					<option value="Salad">Salad</option>
+					<option value="Seafood">Seafood</option>
+					<option value="Southwestern">Southwestern</option>
+					<option value="Steak">Steak</option>
+					<option value="Tapas">Tapas</option>
+					<option value="Ukrainian">Ukrainian</option>
+					<option value="Other">Other</option>
+				</select>
+				<br>
+				<label for="cuisine_type3">Fourth Cuisine Type<font color="red">*</font></label>
+    			<br>
+				<select name="cuisine_type3" class="form-control" oninput="this.className = ''" value="<%= restaurant.cuisine_type3 %>" multiple required>
+					<option value="Asian">Asian</option>
+					<option value="Indian">Indian</option>
+					<option value="Vietnamese">Vietnamese</option>
+					<option value="Italian">Italian</option>
+					<option value="Greek">Greek</option>
+					<option value="French">French</option>
+					<option value="Fast Food">Fast Food</option>
+					<option value="Canadian">Canadian</option>
+					<option value="Chinese Food">Chinese Food</option>
+					<option value="Italian">Italian</option>
+					<option value="Sushi">Sushi</option>
+					<option value="Bakery">Bakery</option>
+					<option value="Cantonese">Cantonese</option>
+					<option value="Deli">Deli</option>
+					<option value="Middle Eastern">Middle Eastern</option>
+					<option value="Diner">Diner</option>
+					<option value="Ethiopian">Ethiopian</option>
+					<option value="Finger Food">Finger Food</option>
+					<option value="German">German</option>
+					<option value="Hawaiian">Hawaiian</option>
+					<option value="Iranian">Iranian</option>
+					<option value="Jamaican">Jamaican</option>
+					<option value="Kebab">Kebab</option>
+					<option value="Lebanese">Lebanese</option>
+					<option value="Mexican">Mexican</option>
+					<option value="Mongolian">Mongolian</option>
+					<option value="Patisserie">Patisserie</option>
+					<option value="Polish">Polish</option>
+					<option value="Spanish">Spanish</option>
+					<option value="Thai">Thai</option>
+					<option value="Vegetarian">Vegetarian</option>
+					<option value="African">African</option>
+					<option value="Argentine">Argentine</option>
+					<option value="Asian Fusion">Asian Fusion</option>
+					<option value="Bar Food">Bar Food</option>
+					<option value="Brazilian">Brazilian</option>
+					<option value="Cajun">Cajun</option>
+					<option value="Caribbean">Caribbean</option>
+					<option value="Coffee and Tea">Coffee and Tea</option>
+					<option value="Desserts">Desserts</option>
+					<option value="Drinks Only">Drinks Only</option>
+					<option value="European">European</option>
+					<option value="Fish and Chips">Fish and Chips</option>
+					<option value="Frozen Yogurt">Frozen Yogurt</option>
+					<option value="Healthy Food">Healthy Food</option>
+					<option value="Irish">Irish</option>
+					<option value="Japanese">Japanese</option>
+					<option value="Korean">Korean</option>
+					<option value="Malaysian">Malaysian</option>
+					<option value="Moroccan">Moroccan</option>
+					<option value="Portuguese">Portuguese</option>
+					<option value="Raw Meats">Raw Meats</option>
+					<option value="Sandwich">Sandwich</option>
+					<option value="Southern">Southern</option>
+					<option value="Sri Lankan">Sri Lankan</option>
+					<option value="Taiwanese">Taiwanese</option>
+					<option value="Teriyaki">Teriyaki</option>
+					<option value="Turkish">Turkish</option>
+					<option value="American">American</option>
+					<option value="Armenian">Armenian</option>
+					<option value="BBQ">BBQ</option>
+					<option value="Beverages">Beverages</option>
+					<option value="Breakfast">Breakfast</option>
+					<option value="Burger">Burger</option>
+					<option value="Central Asian">Central Asian</option>
+					<option value="Cuban">Cuban</option>
+					<option value="Dim Sum">Dim Sum</option>
+					<option value="Eastern European">Eastern European</option>
+					<option value="Filipino">Filipino</option>
+					<option value="Fusion">Fusion</option>
+					<option value="Grill">Grill</option>
+					<option value="Hungarian">Hungarian</option>
+					<option value="Indonesian">Indonesian</option>
+					<option value="Juices">Juices</option>
+					<option value="Latin American">Latin American</option>
+					<option value="Mediterranean">Mediterranean</option>
+					<option value="Mediterranean">Mediterranean</option>
+					<option value="Pakistani">Pakistani</option>
+					<option value="Pizza">Pizza</option>
+					<option value="Pub Food">Pub Food</option>
+					<option value="Salad">Salad</option>
+					<option value="Seafood">Seafood</option>
+					<option value="Southwestern">Southwestern</option>
+					<option value="Steak">Steak</option>
+					<option value="Tapas">Tapas</option>
+					<option value="Ukrainian">Ukrainian</option>
+					<option value="Other">Other</option>
+				</select>
+				<br>
+				<label for="cuisine_tags">TAGS FOR BUSINESS (Maximun 5 Allowed)<font color="red">*</font></label>
+        		<br>
+        		<label for="cuisine_tags">FIRST TAG</label>
+    			 <br>
+				<select name="cuisine_tags" oninput="this.className = ''" class="form-control" value="<%= restaurant.cuisine_tags %>" multiple required>
+        			<option value="DJ">DJ</option>
+        			<option value="Live Music">Live Music</option>
+        			<option value="Free Parking">Free Parking</option>
+        			<option value="Private Parking">Private Parking</option>
+        			<option value="Valet Parking Available">Valet Parking Available</option>
+        			<option value="Outdoor Seating">Outdoor Seating</option>
+        			<option value="Patio Seating">Patio Seating</option>
+        			<option value="Table Reservation Required">Table Reservation Required</option>
+        			<option value="Restricted Entry">Restricted Entry</option>
+        			<option value="ATM">ATM</option>
+        			<option value="Catering Availble">Catering Available</option>
+        			<option value="Kid Friendly">Kid Friendly</option>
+        			<option value="Disabled Friendly">Disabled Friendly</option>
+        			<option value="Heated Patio">Heated Patio</option>
+        			<option value="Hookah">Hookah</option>
+        			<option value="Pet Friendly">Pet Friendly</option>
+        			<option value="Private Dining Available">Private Dining Available</option>
+        			<option value="Smoking Area">Smoking Area</option>
+        			<option value="Wheelchair Accessible">Wheelchair Accessible</option>
+        			<option value="Wifi">Wifi</option>
+        			<option value="Gluten Free Options">Gluten Free Options</option>
+        			<option value="Pure Veg">Pure Veg</option>
+        			<option value="Serves Orangic Food">Serves Orangic Food</option>
+        			<option value="Serves Pho">Serves Pho</option>
+        			<option value="Vegan Options">Vegan Options</option>
+        			<option value="Vegetarian Options">Vegetarian Options</option>
+        			<option value="Afternoon Tea">Afternoon Tea</option>
+	        		<option value="All Day Breakfast">All Day Breakfast</option>
+        			<option value="All You Can Eat">All You Can Eat</option>
+        			<option value="Brunch">Brunch</option>
+        			<option value="Buffet">Buffet</option>
+        			<option value="Desserts and Bakes">Desserts and Bakes</option>
+        			<option value="Group Meal">Group Meal</option>
+        			<option value="Hot Pot">Hot Pot</option>
+        			<option value="Korean Barbecue">Korean Barbecue</option>
+        			<option value="Locally Sourced">Locally Sourced</option>
+        			<option value="Lunch Menu">Lunch Menu</option>
+        			<option value="Board Games">Board Games</option>
+        			<option value="Club">Club</option>
+        			<option value="Dance Floor">Dance Floor</option>
+        			<option value="Foosball">Foosball</option>
+        			<option value="Karaoke">Karaoke</option>
+        			<option value="Live Entertainment">Live Entertainment</option>
+        			<option value="Ping Pong">Ping Pong</option>
+        			<option value="Pool Table">Pool Table</option>
+        			<option value="Pub Quiz">Pub Quiz</option>
+        			<option value="Sports TV">Sports TV</option>
+        			<option value="Ocean View/Lake View">Ocean View/Lake View</option>
+        			<option value="Bottle Service">Bottle Service</option>
+        			<option value="Craft Beer">Craft Beer</option>
+        			<option value="Fixed Price Menu">Fixed Price Menu</option>
+        			<option value="Drive Thrue">Drive Thru</option>
+        			<option value="Rooftop">Rooftop</option>
+        			<option value="Wine">Wine</option>
+        			<option value="Gastro Pub">Gastro Pub</option>
+        			<option value="No Seating Available">No Seating Availble</option>
+        			<option value="Mobile Chargers on Table">Mobile Chargers on Table</option>
+        			<option value="Serves Cocktails">Serves Cocktails</option>
+        		</select>
+        		<br>
+        		<!--tag group #2-->
+        		<label for="cuisine_tag1">SECOND TAG</label>
+        			<br>
+        		<select name="cuisine_tag1" oninput="this.className = ''" class="form-control" value="<%= restaurant.cuisine_tag1 %>" multiple required>
+        			<option value="DJ">DJ</option>
+        			<option value="Live Music">Live Music</option>
+        			<option value="Free Parking">Free Parking</option>
+        			<option value="Private Parking">Private Parking</option>
+        			<option value="Valet Parking Available">Valet Parking Available</option>
+        			<option value="Outdoor Seating">Outdoor Seating</option>
+        			<option value="Patio Seating">Patio Seating</option>
+        			<option value="Table Reservation Required">Table Reservation Required</option>
+        			<option value="Restricted Entry">Restricted Entry</option>
+        			<option value="ATM">ATM</option>
+        			<option value="Catering Availble">Catering Available</option>
+        			<option value="Kid Friendly">Kid Friendly</option>
+        			<option value="Disabled Friendly">Disabled Friendly</option>
+        			<option value="Heated Patio">Heated Patio</option>
+        			<option value="Hookah">Hookah</option>
+        			<option value="Pet Friendly">Pet Friendly</option>
+        			<option value="Private Dining Available">Private Dining Available</option>
+        			<option value="Smoking Area">Smoking Area</option>
+        			<option value="Wheelchair Accessible">Wheelchair Accessible</option>
+        			<option value="Wifi">Wifi</option>
+        			<option value="Gluten Free Options">Gluten Free Options</option>
+        			<option value="Pure Veg">Pure Veg</option>
+        			<option value="Serves Orangic Food">Serves Orangic Food</option>
+        			<option value="Serves Pho">Serves Pho</option>
+        			<option value="Vegan Options">Vegan Options</option>
+        			<option value="Vegetarian Options">Vegetarian Options</option>
+        			<option value="Afternoon Tea">Afternoon Tea</option>
+        			<option value="All Day Breakfast">All Day Breakfast</option>
+        			<option value="All You Can Eat">All You Can Eat</option>
+        			<option value="Brunch">Brunch</option>
+        			<option value="Buffet">Buffet</option>
+        			<option value="Desserts and Bakes">Desserts and Bakes</option>
+        			<option value="Group Meal">Group Meal</option>
+        			<option value="Hot Pot">Hot Pot</option>
+        			<option value="Korean Barbecue">Korean Barbecue</option>
+        			<option value="Locally Sourced">Locally Sourced</option>
+        			<option value="Lunch Menu">Lunch Menu</option>
+        			<option value="Board Games">Board Games</option>
+        			<option value="Club">Club</option>
+        			<option value="Dance Floor">Dance Floor</option>
+        			<option value="Foosball">Foosball</option>
+        			<option value="Karaoke">Karaoke</option>
+        			<option value="Live Entertainment">Live Entertainment</option>
+        			<option value="Ping Pong">Ping Pong</option>
+        			<option value="Pool Table">Pool Table</option>
+        			<option value="Pub Quiz">Pub Quiz</option>
+        			<option value="Sports TV">Sports TV</option>
+        			<option value="Ocean View/Lake View">Ocean View/Lake View</option>
+        			<option value="Bottle Service">Bottle Service</option>
+        			<option value="Craft Beer">Craft Beer</option>
+        			<option value="Fixed Price Menu">Fixed Price Menu</option>
+        			<option value="Drive Thrue">Drive Thru</option>
+        			<option value="Rooftop">Rooftop</option>
+        			<option value="Wine">Wine</option>
+        			<option value="Gastro Pub">Gastro Pub</option>
+        			<option value="No Seating Available">No Seating Availble</option>
+        			<option value="Mobile Chargers on Table">Mobile Chargers on Table</option>
+        			<option value="Serves Cocktails">Serves Cocktails</option>
+        		</select>
+        		<br>
+        		<!--tag group #3-->
+        		<label for="cuisine_tag2">THIRD TAG</label>
+        			<br>
+        		<select name="cuisine_tag2" oninput="this.className = ''" class="form-control" value="<%= restaurant.cuisine_tag2 %>" multiple required>
+        			<option value="DJ">DJ</option>
+        			<option value="Live Music">Live Music</option>
+        			<option value="Free Parking">Free Parking</option>
+        			<option value="Private Parking">Private Parking</option>
+        			<option value="Valet Parking Available">Valet Parking Available</option>
+        			<option value="Outdoor Seating">Outdoor Seating</option>
+        			<option value="Patio Seating">Patio Seating</option>
+        			<option value="Table Reservation Required">Table Reservation Required</option>
+        			<option value="Restricted Entry">Restricted Entry</option>
+        			<option value="ATM">ATM</option>
+        			<option value="Catering Availble">Catering Available</option>
+        			<option value="Kid Friendly">Kid Friendly</option>
+        			<option value="Disabled Friendly">Disabled Friendly</option>
+        			<option value="Heated Patio">Heated Patio</option>
+        			<option value="Hookah">Hookah</option>
+        			<option value="Pet Friendly">Pet Friendly</option>
+        			<option value="Private Dining Available">Private Dining Available</option>
+        			<option value="Smoking Area">Smoking Area</option>
+        			<option value="Wheelchair Accessible">Wheelchair Accessible</option>
+        			<option value="Wifi">Wifi</option>
+        			<option value="Gluten Free Options">Gluten Free Options</option>
+        			<option value="Pure Veg">Pure Veg</option>
+        			<option value="Serves Orangic Food">Serves Orangic Food</option>
+        			<option value="Serves Pho">Serves Pho</option>
+        			<option value="Vegan Options">Vegan Options</option>
+        			<option value="Vegetarian Options">Vegetarian Options</option>
+        			<option value="Afternoon Tea">Afternoon Tea</option>
+        			<option value="All Day Breakfast">All Day Breakfast</option>
+        			<option value="All You Can Eat">All You Can Eat</option>
+        			<option value="Brunch">Brunch</option>
+        			<option value="Buffet">Buffet</option>
+        			<option value="Desserts and Bakes">Desserts and Bakes</option>
+        			<option value="Group Meal">Group Meal</option>
+        			<option value="Hot Pot">Hot Pot</option>
+        			<option value="Korean Barbecue">Korean Barbecue</option>
+        			<option value="Locally Sourced">Locally Sourced</option>
+        			<option value="Lunch Menu">Lunch Menu</option>
+        			<option value="Board Games">Board Games</option>
+        			<option value="Club">Club</option>
+        			<option value="Dance Floor">Dance Floor</option>
+        			<option value="Foosball">Foosball</option>
+        			<option value="Karaoke">Karaoke</option>
+        			<option value="Live Entertainment">Live Entertainment</option>
+        			<option value="Ping Pong">Ping Pong</option>
+        			<option value="Pool Table">Pool Table</option>
+        			<option value="Pub Quiz">Pub Quiz</option>
+        			<option value="Sports TV">Sports TV</option>
+        			<option value="Ocean View/Lake View">Ocean View/Lake View</option>
+        			<option value="Bottle Service">Bottle Service</option>
+        			<option value="Craft Beer">Craft Beer</option>
+        			<option value="Fixed Price Menu">Fixed Price Menu</option>
+        			<option value="Drive Thrue">Drive Thru</option>
+        			<option value="Rooftop">Rooftop</option>
+        			<option value="Wine">Wine</option>
+        			<option value="Gastro Pub">Gastro Pub</option>
+        			<option value="No Seating Available">No Seating Availble</option>
+        			<option value="Mobile Chargers on Table">Mobile Chargers on Table</option>
+        			<option value="Serves Cocktails">Serves Cocktails</option>
+        		</select>
+        		<br>
+        		<!--tag group #4-->
+        		<label for="cuisine_tag3">FOURTH TAG</label>
+        			<br>
+        		<select name="cuisine_tag3" oninput="this.className = ''" class="form-control" value="<%= restaurant.cuisine_tag3 %>" multiple required>
+        			<option value="DJ">DJ</option>
+        			<option value="Live Music">Live Music</option>
+        			<option value="Free Parking">Free Parking</option>
+        			<option value="Private Parking">Private Parking</option>
+        			<option value="Valet Parking Available">Valet Parking Available</option>
+        			<option value="Outdoor Seating">Outdoor Seating</option>
+        			<option value="Patio Seating">Patio Seating</option>
+        			<option value="Table Reservation Required">Table Reservation Required</option>
+        			<option value="Restricted Entry">Restricted Entry</option>
+        			<option value="ATM">ATM</option>
+        			<option value="Catering Availble">Catering Available</option>
+        			<option value="Kid Friendly">Kid Friendly</option>
+        			<option value="Disabled Friendly">Disabled Friendly</option>
+        			<option value="Heated Patio">Heated Patio</option>
+        			<option value="Hookah">Hookah</option>
+        			<option value="Pet Friendly">Pet Friendly</option>
+        			<option value="Private Dining Available">Private Dining Available</option>
+        			<option value="Smoking Area">Smoking Area</option>
+        			<option value="Wheelchair Accessible">Wheelchair Accessible</option>
+        			<option value="Wifi">Wifi</option>
+        			<option value="Gluten Free Options">Gluten Free Options</option>
+        			<option value="Pure Veg">Pure Veg</option>
+        			<option value="Serves Orangic Food">Serves Orangic Food</option>
+        			<option value="Serves Pho">Serves Pho</option>
+        			<option value="Vegan Options">Vegan Options</option>
+        			<option value="Vegetarian Options">Vegetarian Options</option>
+        			<option value="Afternoon Tea">Afternoon Tea</option>
+        			<option value="All Day Breakfast">All Day Breakfast</option>
+        			<option value="All You Can Eat">All You Can Eat</option>
+        			<option value="Brunch">Brunch</option>
+        			<option value="Buffet">Buffet</option>
+        			<option value="Desserts and Bakes">Desserts and Bakes</option>
+        			<option value="Group Meal">Group Meal</option>
+        			<option value="Hot Pot">Hot Pot</option>
+        			<option value="Korean Barbecue">Korean Barbecue</option>
+        			<option value="Locally Sourced">Locally Sourced</option>
+        			<option value="Lunch Menu">Lunch Menu</option>
+        			<option value="Board Games">Board Games</option>
+        			<option value="Club">Club</option>
+        			<option value="Dance Floor">Dance Floor</option>
+        			<option value="Foosball">Foosball</option>
+        			<option value="Karaoke">Karaoke</option>
+        			<option value="Live Entertainment">Live Entertainment</option>
+        			<option value="Ping Pong">Ping Pong</option>
+        			<option value="Pool Table">Pool Table</option>
+        			<option value="Pub Quiz">Pub Quiz</option>
+        			<option value="Sports TV">Sports TV</option>
+        			<option value="Ocean View/Lake View">Ocean View/Lake View</option>
+        			<option value="Bottle Service">Bottle Service</option>
+        			<option value="Craft Beer">Craft Beer</option>
+        			<option value="Fixed Price Menu">Fixed Price Menu</option>
+        			<option value="Drive Thrue">Drive Thru</option>
+        			<option value="Rooftop">Rooftop</option>
+        			<option value="Wine">Wine</option>
+        			<option value="Gastro Pub">Gastro Pub</option>
+        			<option value="No Seating Available">No Seating Availble</option>
+        			<option value="Mobile Chargers on Table">Mobile Chargers on Table</option>
+        			<option value="Serves Cocktails">Serves Cocktails</option>
+        		</select>
+        		<br>
+        		<!--tag group #5-->
+        		<label for="cuisine_tag4">FIFTH TAG</label>
+        			<br>
+        		<select name="cuisine_tag4" oninput="this.className = ''" class="form-control" value="<%= restaurant.cuisine_tag4 %>" multiple required>
+        			<option value="DJ">DJ</option>
+        			<option value="Live Music">Live Music</option>
+        			<option value="Free Parking">Free Parking</option>
+        			<option value="Private Parking">Private Parking</option>
+        			<option value="Valet Parking Available">Valet Parking Available</option>
+        			<option value="Outdoor Seating">Outdoor Seating</option>
+        			<option value="Patio Seating">Patio Seating</option>
+        			<option value="Table Reservation Required">Table Reservation Required</option>
+        			<option value="Restricted Entry">Restricted Entry</option>
+        			<option value="ATM">ATM</option>
+        			<option value="Catering Availble">Catering Available</option>
+        			<option value="Kid Friendly">Kid Friendly</option>
+        			<option value="Disabled Friendly">Disabled Friendly</option>
+        			<option value="Heated Patio">Heated Patio</option>
+        			<option value="Hookah">Hookah</option>
+        			<option value="Pet Friendly">Pet Friendly</option>
+        			<option value="Private Dining Available">Private Dining Available</option>
+        			<option value="Smoking Area">Smoking Area</option>
+        			<option value="Wheelchair Accessible">Wheelchair Accessible</option>
+        			<option value="Wifi">Wifi</option>
+        			<option value="Gluten Free Options">Gluten Free Options</option>
+        			<option value="Pure Veg">Pure Veg</option>
+        			<option value="Serves Orangic Food">Serves Orangic Food</option>
+        			<option value="Serves Pho">Serves Pho</option>
+        			<option value="Vegan Options">Vegan Options</option>
+        			<option value="Vegetarian Options">Vegetarian Options</option>
+        			<option value="Afternoon Tea">Afternoon Tea</option>
+        			<option value="All Day Breakfast">All Day Breakfast</option>
+        			<option value="All You Can Eat">All You Can Eat</option>
+        			<option value="Brunch">Brunch</option>
+        			<option value="Buffet">Buffet</option>
+        			<option value="Desserts and Bakes">Desserts and Bakes</option>
+        			<option value="Group Meal">Group Meal</option>
+        			<option value="Hot Pot">Hot Pot</option>
+        			<option value="Korean Barbecue">Korean Barbecue</option>
+        			<option value="Locally Sourced">Locally Sourced</option>
+        			<option value="Lunch Menu">Lunch Menu</option>
+        			<option value="Board Games">Board Games</option>
+        			<option value="Club">Club</option>
+        			<option value="Dance Floor">Dance Floor</option>
+        			<option value="Foosball">Foosball</option>
+        			<option value="Karaoke">Karaoke</option>
+        			<option value="Live Entertainment">Live Entertainment</option>
+        			<option value="Ping Pong">Ping Pong</option>
+        			<option value="Pool Table">Pool Table</option>
+        			<option value="Pub Quiz">Pub Quiz</option>
+        			<option value="Sports TV">Sports TV</option>
+        			<option value="Ocean View/Lake View">Ocean View/Lake View</option>
+        			<option value="Bottle Service">Bottle Service</option>
+        			<option value="Craft Beer">Craft Beer</option>
+        			<option value="Fixed Price Menu">Fixed Price Menu</option>
+        			<option value="Drive Thrue">Drive Thru</option>
+        			<option value="Rooftop">Rooftop</option>
+        			<option value="Wine">Wine</option>
+        			<option value="Gastro Pub">Gastro Pub</option>
+        			<option value="No Seating Available">No Seating Availble</option>
+        			<option value="Mobile Chargers on Table">Mobile Chargers on Table</option>
+        			<option value="Serves Cocktails">Serves Cocktails</option>
+        		</select>
+        		</div>
+        		<br>
+        		<div class="form-group">
+        		<label for="restaurant_services">SERVICES<font color="red">*</font> (Maximun 5 Availble)</label>
+        		<br>
+				<br>
+				<label for="restaurant_services">First Service</label>
+          <br>
+				<select name="restaurant_services" oninput="this.className = ''" class="form-control" value="<%= restaurant.restaurant_services %>" multiple required>
+        				<option value="Breakfast">Breakfast</option>
+        				<option value="Lunch">Lunch</option>
+        				<option value="Dinner">Dinner</option>
+        				<option value="Cafe">Cafe</option>
+        				<option value="NightClub">NightClub</option>
+        				<option value="Pick-Up">Pick-Up</option>
+        				<option value="Delivery">Delivery</option>
+        				<option value="Phone Order">Phone Order</option>
+        		</select>
+        		<br>
+        		<label for="restaurant_services1">Second Service</label>
+          <br>
+				<select name="restaurant_services1" oninput="this.className = ''" class="form-control" value="<%= restaurant.restaurant_services1 %>" multiple required>
+        				<option value="Breakfast">Breakfast</option>
+        				<option value="Lunch">Lunch</option>
+        				<option value="Dinner">Dinner</option>
+        				<option value="Cafe">Cafe</option>
+        				<option value="NightClub">NightClub</option>
+        				<option value="Pick-Up">Pick-Up</option>
+        				<option value="Delivery">Delivery</option>
+        				<option value="Phone Order">Phone Order</option>
+        		</select>
+        		<br>
+        		<label for="restaurant_services2">Third Service</label>
+          <br>
+				<select name="restaurant_services2" oninput="this.className = ''" class="form-control" value="<%= restaurant.restaurant_services2 %>" multiple required>
+        				<option value="Breakfast">Breakfast</option>
+        				<option value="Lunch">Lunch</option>
+        				<option value="Dinner">Dinner</option>
+        				<option value="Cafe">Cafe</option>
+        				<option value="NightClub">NightClub</option>
+        				<option value="Pick-Up">Pick-Up</option>
+        				<option value="Delivery">Delivery</option>
+        				<option value="Phone Order">Phone Order</option>
+        		</select>
+        		<br>
+        		<label for="restaurant_services3">Fourth Service</label>
+          <br>
+				<select name="restaurant_services3" oninput="this.className = ''" class="form-control" value="<%= restaurant.restaurant_services3 %>" multiple required>
+        				<option value="Breakfast">Breakfast</option>
+        				<option value="Lunch">Lunch</option>
+        				<option value="Dinner">Dinner</option>
+        				<option value="Cafe">Cafe</option>
+        				<option value="NightClub">NightClub</option>
+        				<option value="Pick-Up">Pick-Up</option>
+        				<option value="Delivery">Delivery</option>
+        				<option value="Phone Order">Phone Order</option>
+        		</select>
+        		<br>
+        		<label for="restaurant_services4">Fifth Service</label>
+          <br>
+				<select name="restaurant_services4" oninput="this.className = ''" class="form-control" value="<%= restaurant.restaurant_services4 %>" multiple required>
+        				<option value="Breakfast">Breakfast</option>
+        				<option value="Lunch">Lunch</option>
+        				<option value="Dinner">Dinner</option>
+        				<option value="Cafe">Cafe</option>
+        				<option value="NightClub">NightClub</option>
+        				<option value="Pick-Up">Pick-Up</option>
+        				<option value="Delivery">Delivery</option>
+        				<option value="Phone Order">Phone Order</option>
+        		</select>
+        		<br>
+        		<br>
+        		<label for="restaurant_website">RESTAURANT WEBSITE</label>
+					<input class="form-control" oninput="this.className = ''" value="<%= restaurant.restaurant_website %>" type="text" name="restaurant_website" placeholder="ie. www.yoururl.com" >
+					<br>
+					</div>
+				<div class="form-group">
+					<label for="imageLocal">Upload Image</label>
+					<input class="form-control" oninput="this.className = ''" type="file" name="imageLocal" accept="image/*">
+					<div><img src="<%= restaurant.image.url %>" style="height: 100px; width: 100px;"></div>
+				</div>
+				<div class="form-group">
+					<label for="description">Description</label>
+					<textarea class="form-control" oninput="this.className = ''" name="description"><%= restaurant.description %> </textarea>
+				</div>
+				<div class="form-group">
+					<label for="location">Location</label>
+    			<input class="form-control"  oninput="this.className = ''" placeholder="City, Province/State, Country" type="text" name="location" id="location" value="<%= restaurant.location %>">
+				</div>
+				<div class="form-group">
+					<label for="restaurant_postal_code">Postal Code</label>
+				<input class="form-control"  oninput="this.className = ''" type="text" name="restaurant_postal_code" placeholder="Postal Code" value="<%= restaurant.restaurant_postal_code %>">
+				</div>
+				<div class="form-group">
+					<label for="payment_methods">Payment Methods</label>
+				<input class="form-control" oninput="this.className = ''" type="text" name="payment_methods" placeholder="Cash or Credit Cards/Debit" value="<%= restaurant.payment_methods %>">
+				<br>
+		  <label for="business_hours">HOURS FOR BUSINESS <font color="red">*</font></label>
+		  <br>
+		  <div class="checkbox">
+		        <label for="monday_hours"><input oninput="this.className = ''" type="checkbox" name="monday_hours" value="Monday" requried>Monday</label>
+		      </div>
+		  <div class="checkbox">
+		        <label for="monday_hours_closed"><input oninput="this.className = ''" type="checkbox" name="monday_hours_closed" value="Closed" requried>Closed</label>
+		  </div>
+		  <br>
+	<label for="monday_from_hours">From Hours:</label>
+	<br>
+      <select class="form-control" name="monday_from_hours" oninput="this.className = ''" value="<%= restaurant.monday_from_hours %>" multiple>
+        <option value="12:00 am">12:00 am</option>
+        <option value="12:30 am">12:30 am</option>
+        <option value="01:00 am">01:00 am</option>
+        <option value="01:30 am">01:30 am</option>
+        <option value="02:00 am">02:00 am</option>
+        <option value="02:30 am">02:30 am</option>
+        <option value="03:00 am">03:00 am</option>
+        <option value="03:30 am">03:30 am</option>
+        <option value="04:00 am">04:00 am</option>
+        <option value="04:30 am">04:30 am</option>
+        <option value="05:00 am">05:00 am</option>
+        <option value="05:30 am">05:30 am</option>
+        <option value="06:00 am">06:00 am</option>
+        <option value="06:30 am">06:30 am</option>
+        <option value="07:00 am">07:00 am</option>
+        <option value="07:30 am">07:30 am</option>
+        <option value="08:00 am">08:00 am</option>
+        <option value="08:30 am">08:30 am</option>
+        <option value="09:00 am">09:00 am</option>
+        <option value="09:30 am">09:30 am</option>
+        <option value="10:00 am">10:00 am</option>
+        <option value="10:30 am">10:30 am</option>
+        <option value="11:00 am">11:00 am</option>
+        <option value="11:30 am">11:30 am</option>
+        <option value="12:00 pm">12:00 pm</option>
+        <option value="12:30 pm">12:30 pm</option>
+        <option value="01:00 pm">01:00 pm</option>
+        <option value="01:30 pm">01:30 pm</option>
+        <option value="02:00 pm">02:00 pm</option>
+        <option value="02:30 pm">02:30 pm</option>
+        <option value="03:00 pm">03:00 pm</option>
+        <option value="03:30 pm">03:30 pm</option>
+        <option value="04:00 pm">04:00 pm</option>
+        <option value="04:30 pm">04:30 pm</option>
+        <option value="05:00 pm">05:00 pm</option>
+        <option value="05:30 pm">05:30 pm</option>
+        <option value="06:00 pm">06:00 pm</option>
+        <option value="06:30 pm">06:30 pm</option>
+        <option value="07:00 pm">07:00 pm</option>
+        <option value="07:30 pm">07:30 pm</option>
+        <option value="08:00 pm">08:00 pm</option>
+        <option value="08:30 pm">08:30 pm</option>
+        <option value="09:00 pm">09:00 pm</option>
+        <option value="09:30 pm">09:30 pm</option>
+        <option value="10:00 pm">10:00 pm</option>
+        <option value="10:30 pm">10:30 pm</option>
+        <option value="11:00 pm">11:00 pm</option>
+        <option value="11:30 pm">11:30 pm</option>
+      </select>
+      <br>
+      <label for="monday_to_hours">To Hours:</label>
+      <br>
+      <select class="form-control" name="monday_to_hours" oninput="this.className = ''" value="<%= restaurant.monday_to_hours %>" multiple>
+        <option value="12:00 am">12:00 am</option>
+        <option value="12:30 am">12:30 am</option>
+        <option value="01:00 am">01:00 am</option>
+        <option value="01:30 am">01:30 am</option>
+        <option value="02:00 am">02:00 am</option>
+        <option value="02:30 am">02:30 am</option>
+        <option value="03:00 am">03:00 am</option>
+        <option value="03:30 am">03:30 am</option>
+        <option value="04:00 am">04:00 am</option>
+        <option value="04:30 am">04:30 am</option>
+        <option value="05:00 am">05:00 am</option>
+        <option value="05:30 am">05:30 am</option>
+        <option value="06:00 am">06:00 am</option>
+        <option value="06:30 am">06:30 am</option>
+        <option value="07:00 am">07:00 am</option>
+        <option value="07:30 am">07:30 am</option>
+        <option value="08:00 am">08:00 am</option>
+        <option value="08:30 am">08:30 am</option>
+        <option value="09:00 am">09:00 am</option>
+        <option value="09:30 am">09:30 am</option>
+        <option value="10:00 am">10:00 am</option>
+        <option value="10:30 am">10:30 am</option>
+        <option value="11:00 am">11:00 am</option>
+        <option value="11:30 am">11:30 am</option>
+        <option value="12:00 pm">12:00 pm</option>
+        <option value="12:30 pm">12:30 pm</option>
+        <option value="01:00 pm">01:00 pm</option>
+        <option value="01:30 pm">01:30 pm</option>
+        <option value="02:00 pm">02:00 pm</option>
+        <option value="02:30 pm">02:30 pm</option>
+        <option value="03:00 pm">03:00 pm</option>
+        <option value="03:30 pm">03:30 pm</option>
+        <option value="04:00 pm">04:00 pm</option>
+        <option value="04:30 pm">04:30 pm</option>
+        <option value="05:00 pm">05:00 pm</option>
+        <option value="05:30 pm">05:30 pm</option>
+        <option value="06:00 pm">06:00 pm</option>
+        <option value="06:30 pm">06:30 pm</option>
+        <option value="07:00 pm">07:00 pm</option>
+        <option value="07:30 pm">07:30 pm</option>
+        <option value="08:00 pm">08:00 pm</option>
+        <option value="08:30 pm">08:30 pm</option>
+        <option value="09:00 pm">09:00 pm</option>
+        <option value="09:30 pm">09:30 pm</option>
+        <option value="10:00 pm">10:00 pm</option>
+        <option value="10:30 pm">10:30 pm</option>
+        <option value="11:00 pm">11:00 pm</option>
+        <option value="11:30 pm">11:30 pm</option>
+      </select>
+				<br>
+				<div class="checkbox">
+		        <label for="tuesday_hours"><input oninput="this.className = ''" type="checkbox" name="tuesday_hours" value="Tuesday" requried>Tuesday</label>
+		      </div>
+		      <div class="checkbox">
+		        <label for="tuesday_hours_closed"><input oninput="this.className = ''" type="checkbox" name="tuesday_hours_closed" value="Closed" requried>Closed</label>
+		  </div>
+    <br>
+	 <label for="tuesday_from_hours">From Hours:</label>
+	 <br>
+      <select class="form-control" name="tuesday_from_hours" oninput="this.className = ''" value="<%= restaurant.tuesday_from_hours %>" multiple>
+        <option value="12:00 am">12:00 am</option>
+        <option value="12:30 am">12:30 am</option>
+        <option value="01:00 am">01:00 am</option>
+        <option value="01:30 am">01:30 am</option>
+        <option value="02:00 am">02:00 am</option>
+        <option value="02:30 am">02:30 am</option>
+        <option value="03:00 am">03:00 am</option>
+        <option value="03:30 am">03:30 am</option>
+        <option value="04:00 am">04:00 am</option>
+        <option value="04:30 am">04:30 am</option>
+        <option value="05:00 am">05:00 am</option>
+        <option value="05:30 am">05:30 am</option>
+        <option value="06:00 am">06:00 am</option>
+        <option value="06:30 am">06:30 am</option>
+        <option value="07:00 am">07:00 am</option>
+        <option value="07:30 am">07:30 am</option>
+        <option value="08:00 am">08:00 am</option>
+        <option value="08:30 am">08:30 am</option>
+        <option value="09:00 am">09:00 am</option>
+        <option value="09:30 am">09:30 am</option>
+        <option value="10:00 am">10:00 am</option>
+        <option value="10:30 am">10:30 am</option>
+        <option value="11:00 am">11:00 am</option>
+        <option value="11:30 am">11:30 am</option>
+        <option value="12:00 pm">12:00 pm</option>
+        <option value="12:30 pm">12:30 pm</option>
+        <option value="01:00 pm">01:00 pm</option>
+        <option value="01:30 pm">01:30 pm</option>
+        <option value="02:00 pm">02:00 pm</option>
+        <option value="02:30 pm">02:30 pm</option>
+        <option value="03:00 pm">03:00 pm</option>
+        <option value="03:30 pm">03:30 pm</option>
+        <option value="04:00 pm">04:00 pm</option>
+        <option value="04:30 pm">04:30 pm</option>
+        <option value="05:00 pm">05:00 pm</option>
+        <option value="05:30 pm">05:30 pm</option>
+        <option value="06:00 pm">06:00 pm</option>
+        <option value="06:30 pm">06:30 pm</option>
+        <option value="07:00 pm">07:00 pm</option>
+        <option value="07:30 pm">07:30 pm</option>
+        <option value="08:00 pm">08:00 pm</option>
+        <option value="08:30 pm">08:30 pm</option>
+        <option value="09:00 pm">09:00 pm</option>
+        <option value="09:30 pm">09:30 pm</option>
+        <option value="10:00 pm">10:00 pm</option>
+        <option value="10:30 pm">10:30 pm</option>
+        <option value="11:00 pm">11:00 pm</option>
+        <option value="11:30 pm">11:30 pm</option>
+      </select>
+      <br>
+      <label for="tuesday_to_hours">To Hours:</label>
+      <br>
+      <select class="form-control" name="tuesday_to_hours" oninput="this.className = ''" value="<%= restaurant.tuesday_to_hours %>" multiple>
+        <option value="12:00 am">12:00 am</option>
+        <option value="12:30 am">12:30 am</option>
+        <option value="01:00 am">01:00 am</option>
+        <option value="01:30 am">01:30 am</option>
+        <option value="02:00 am">02:00 am</option>
+        <option value="02:30 am">02:30 am</option>
+        <option value="03:00 am">03:00 am</option>
+        <option value="03:30 am">03:30 am</option>
+        <option value="04:00 am">04:00 am</option>
+        <option value="04:30 am">04:30 am</option>
+        <option value="05:00 am">05:00 am</option>
+        <option value="05:30 am">05:30 am</option>
+        <option value="06:00 am">06:00 am</option>
+        <option value="06:30 am">06:30 am</option>
+        <option value="07:00 am">07:00 am</option>
+        <option value="07:30 am">07:30 am</option>
+        <option value="08:00 am">08:00 am</option>
+        <option value="08:30 am">08:30 am</option>
+        <option value="09:00 am">09:00 am</option>
+        <option value="09:30 am">09:30 am</option>
+        <option value="10:00 am">10:00 am</option>
+        <option value="10:30 am">10:30 am</option>
+        <option value="11:00 am">11:00 am</option>
+        <option value="11:30 am">11:30 am</option>
+        <option value="12:00 pm">12:00 pm</option>
+        <option value="12:30 pm">12:30 pm</option>
+        <option value="01:00 pm">01:00 pm</option>
+        <option value="01:30 pm">01:30 pm</option>
+        <option value="02:00 pm">02:00 pm</option>
+        <option value="02:30 pm">02:30 pm</option>
+        <option value="03:00 pm">03:00 pm</option>
+        <option value="03:30 pm">03:30 pm</option>
+        <option value="04:00 pm">04:00 pm</option>
+        <option value="04:30 pm">04:30 pm</option>
+        <option value="05:00 pm">05:00 pm</option>
+        <option value="05:30 pm">05:30 pm</option>
+        <option value="06:00 pm">06:00 pm</option>
+        <option value="06:30 pm">06:30 pm</option>
+        <option value="07:00 pm">07:00 pm</option>
+        <option value="07:30 pm">07:30 pm</option>
+        <option value="08:00 pm">08:00 pm</option>
+        <option value="08:30 pm">08:30 pm</option>
+        <option value="09:00 pm">09:00 pm</option>
+        <option value="09:30 pm">09:30 pm</option>
+        <option value="10:00 pm">10:00 pm</option>
+        <option value="10:30 pm">10:30 pm</option>
+        <option value="11:00 pm">11:00 pm</option>
+        <option value="11:30 pm">11:30 pm</option>
+      </select>
+				<br>
+				<div class="checkbox">
+		        <label for="wednesday_hours"><input oninput="this.className = ''" type="checkbox" name="wednesday_hours" value="Wednesday" requried>Wednesday</label>
+		      </div>
+		      <div class="checkbox">
+		        <label for="wednesday_hours_closed"><input oninput="this.className = ''" type="checkbox" name="wednesday_hours_closed" value="Closed" requried>Closed</label>
+		  </div>
+		  <br>
+	 <label for="wednesday_from_hours">From Hours:</label>
+	 <br>
+      <select class="form-control" name="wednesday_from_hours" oninput="this.className = ''" value="<%= restaurant.wednesday_from_hours %>" multiple>
+        <option value="12:00 am">12:00 am</option>
+        <option value="12:30 am">12:30 am</option>
+        <option value="01:00 am">01:00 am</option>
+        <option value="01:30 am">01:30 am</option>
+        <option value="02:00 am">02:00 am</option>
+        <option value="02:30 am">02:30 am</option>
+        <option value="03:00 am">03:00 am</option>
+        <option value="03:30 am">03:30 am</option>
+        <option value="04:00 am">04:00 am</option>
+        <option value="04:30 am">04:30 am</option>
+        <option value="05:00 am">05:00 am</option>
+        <option value="05:30 am">05:30 am</option>
+        <option value="06:00 am">06:00 am</option>
+        <option value="06:30 am">06:30 am</option>
+        <option value="07:00 am">07:00 am</option>
+        <option value="07:30 am">07:30 am</option>
+        <option value="08:00 am">08:00 am</option>
+        <option value="08:30 am">08:30 am</option>
+        <option value="09:00 am">09:00 am</option>
+        <option value="09:30 am">09:30 am</option>
+        <option value="10:00 am">10:00 am</option>
+        <option value="10:30 am">10:30 am</option>
+        <option value="11:00 am">11:00 am</option>
+        <option value="11:30 am">11:30 am</option>
+        <option value="12:00 pm">12:00 pm</option>
+        <option value="12:30 pm">12:30 pm</option>
+        <option value="01:00 pm">01:00 pm</option>
+        <option value="01:30 pm">01:30 pm</option>
+        <option value="02:00 pm">02:00 pm</option>
+        <option value="02:30 pm">02:30 pm</option>
+        <option value="03:00 pm">03:00 pm</option>
+        <option value="03:30 pm">03:30 pm</option>
+        <option value="04:00 pm">04:00 pm</option>
+        <option value="04:30 pm">04:30 pm</option>
+        <option value="05:00 pm">05:00 pm</option>
+        <option value="05:30 pm">05:30 pm</option>
+        <option value="06:00 pm">06:00 pm</option>
+        <option value="06:30 pm">06:30 pm</option>
+        <option value="07:00 pm">07:00 pm</option>
+        <option value="07:30 pm">07:30 pm</option>
+        <option value="08:00 pm">08:00 pm</option>
+        <option value="08:30 pm">08:30 pm</option>
+        <option value="09:00 pm">09:00 pm</option>
+        <option value="09:30 pm">09:30 pm</option>
+        <option value="10:00 pm">10:00 pm</option>
+        <option value="10:30 pm">10:30 pm</option>
+        <option value="11:00 pm">11:00 pm</option>
+        <option value="11:30 pm">11:30 pm</option>
+      </select>
+      <br>
+      <label for="wednesday_to_hours">To Hours:</label>
+      <br>
+      <select class="form-control" name="wednesday_to_hours" oninput="this.className = ''" value="<%= restaurant.wednesday_to_hours %>" multiple>
+        <option value="12:00 am">12:00 am</option>
+        <option value="12:30 am">12:30 am</option>
+        <option value="01:00 am">01:00 am</option>
+        <option value="01:30 am">01:30 am</option>
+        <option value="02:00 am">02:00 am</option>
+        <option value="02:30 am">02:30 am</option>
+        <option value="03:00 am">03:00 am</option>
+        <option value="03:30 am">03:30 am</option>
+        <option value="04:00 am">04:00 am</option>
+        <option value="04:30 am">04:30 am</option>
+        <option value="05:00 am">05:00 am</option>
+        <option value="05:30 am">05:30 am</option>
+        <option value="06:00 am">06:00 am</option>
+        <option value="06:30 am">06:30 am</option>
+        <option value="07:00 am">07:00 am</option>
+        <option value="07:30 am">07:30 am</option>
+        <option value="08:00 am">08:00 am</option>
+        <option value="08:30 am">08:30 am</option>
+        <option value="09:00 am">09:00 am</option>
+        <option value="09:30 am">09:30 am</option>
+        <option value="10:00 am">10:00 am</option>
+        <option value="10:30 am">10:30 am</option>
+        <option value="11:00 am">11:00 am</option>
+        <option value="11:30 am">11:30 am</option>
+        <option value="12:00 pm">12:00 pm</option>
+        <option value="12:30 pm">12:30 pm</option>
+        <option value="01:00 pm">01:00 pm</option>
+        <option value="01:30 pm">01:30 pm</option>
+        <option value="02:00 pm">02:00 pm</option>
+        <option value="02:30 pm">02:30 pm</option>
+        <option value="03:00 pm">03:00 pm</option>
+        <option value="03:30 pm">03:30 pm</option>
+        <option value="04:00 pm">04:00 pm</option>
+        <option value="04:30 pm">04:30 pm</option>
+        <option value="05:00 pm">05:00 pm</option>
+        <option value="05:30 pm">05:30 pm</option>
+        <option value="06:00 pm">06:00 pm</option>
+        <option value="06:30 pm">06:30 pm</option>
+        <option value="07:00 pm">07:00 pm</option>
+        <option value="07:30 pm">07:30 pm</option>
+        <option value="08:00 pm">08:00 pm</option>
+        <option value="08:30 pm">08:30 pm</option>
+        <option value="09:00 pm">09:00 pm</option>
+        <option value="09:30 pm">09:30 pm</option>
+        <option value="10:00 pm">10:00 pm</option>
+        <option value="10:30 pm">10:30 pm</option>
+        <option value="11:00 pm">11:00 pm</option>
+        <option value="11:30 pm">11:30 pm</option>
+      </select>
+      <br>
+      <div class="checkbox">
+		        <label for="thursday_hours"><input oninput="this.className = ''" type="checkbox" name="thursday_hours" value="Thursday" requried>Thursday</label>
+		      </div>
+		      <div class="checkbox">
+		        <label for="thursday_hours_closed"><input oninput="this.className = ''" type="checkbox" name="thursday_hours_closed" value="Closed" requried>Closed</label>
+		  </div>
+		  <br>
+	 <label for="thursday_from_hours">From Hours:</label>
+	 <br>
+      <select class="form-control" name="thursday_from_hours" oninput="this.className = ''" value="<%= restaurant.thursday_from_hours %>" multiple>
+        <option value="12:00 am">12:00 am</option>
+        <option value="12:30 am">12:30 am</option>
+        <option value="01:00 am">01:00 am</option>
+        <option value="01:30 am">01:30 am</option>
+        <option value="02:00 am">02:00 am</option>
+        <option value="02:30 am">02:30 am</option>
+        <option value="03:00 am">03:00 am</option>
+        <option value="03:30 am">03:30 am</option>
+        <option value="04:00 am">04:00 am</option>
+        <option value="04:30 am">04:30 am</option>
+        <option value="05:00 am">05:00 am</option>
+        <option value="05:30 am">05:30 am</option>
+        <option value="06:00 am">06:00 am</option>
+        <option value="06:30 am">06:30 am</option>
+        <option value="07:00 am">07:00 am</option>
+        <option value="07:30 am">07:30 am</option>
+        <option value="08:00 am">08:00 am</option>
+        <option value="08:30 am">08:30 am</option>
+        <option value="09:00 am">09:00 am</option>
+        <option value="09:30 am">09:30 am</option>
+        <option value="10:00 am">10:00 am</option>
+        <option value="10:30 am">10:30 am</option>
+        <option value="11:00 am">11:00 am</option>
+        <option value="11:30 am">11:30 am</option>
+        <option value="12:00 pm">12:00 pm</option>
+        <option value="12:30 pm">12:30 pm</option>
+        <option value="01:00 pm">01:00 pm</option>
+        <option value="01:30 pm">01:30 pm</option>
+        <option value="02:00 pm">02:00 pm</option>
+        <option value="02:30 pm">02:30 pm</option>
+        <option value="03:00 pm">03:00 pm</option>
+        <option value="03:30 pm">03:30 pm</option>
+        <option value="04:00 pm">04:00 pm</option>
+        <option value="04:30 pm">04:30 pm</option>
+        <option value="05:00 pm">05:00 pm</option>
+        <option value="05:30 pm">05:30 pm</option>
+        <option value="06:00 pm">06:00 pm</option>
+        <option value="06:30 pm">06:30 pm</option>
+        <option value="07:00 pm">07:00 pm</option>
+        <option value="07:30 pm">07:30 pm</option>
+        <option value="08:00 pm">08:00 pm</option>
+        <option value="08:30 pm">08:30 pm</option>
+        <option value="09:00 pm">09:00 pm</option>
+        <option value="09:30 pm">09:30 pm</option>
+        <option value="10:00 pm">10:00 pm</option>
+        <option value="10:30 pm">10:30 pm</option>
+        <option value="11:00 pm">11:00 pm</option>
+        <option value="11:30 pm">11:30 pm</option>
+      </select>
+      <br>
+      <label for="thursday_to_hours">To Hours:</label>
+      <br>
+      <select class="form-control" name="thursday_to_hours" oninput="this.className = ''" value="<%= restaurant.thursday_to_hours %>" multiple>
+        <option value="12:00 am">12:00 am</option>
+        <option value="12:30 am">12:30 am</option>
+        <option value="01:00 am">01:00 am</option>
+        <option value="01:30 am">01:30 am</option>
+        <option value="02:00 am">02:00 am</option>
+        <option value="02:30 am">02:30 am</option>
+        <option value="03:00 am">03:00 am</option>
+        <option value="03:30 am">03:30 am</option>
+        <option value="04:00 am">04:00 am</option>
+        <option value="04:30 am">04:30 am</option>
+        <option value="05:00 am">05:00 am</option>
+        <option value="05:30 am">05:30 am</option>
+        <option value="06:00 am">06:00 am</option>
+        <option value="06:30 am">06:30 am</option>
+        <option value="07:00 am">07:00 am</option>
+        <option value="07:30 am">07:30 am</option>
+        <option value="08:00 am">08:00 am</option>
+        <option value="08:30 am">08:30 am</option>
+        <option value="09:00 am">09:00 am</option>
+        <option value="09:30 am">09:30 am</option>
+        <option value="10:00 am">10:00 am</option>
+        <option value="10:30 am">10:30 am</option>
+        <option value="11:00 am">11:00 am</option>
+        <option value="11:30 am">11:30 am</option>
+        <option value="12:00 pm">12:00 pm</option>
+        <option value="12:30 pm">12:30 pm</option>
+        <option value="01:00 pm">01:00 pm</option>
+        <option value="01:30 pm">01:30 pm</option>
+        <option value="02:00 pm">02:00 pm</option>
+        <option value="02:30 pm">02:30 pm</option>
+        <option value="03:00 pm">03:00 pm</option>
+        <option value="03:30 pm">03:30 pm</option>
+        <option value="04:00 pm">04:00 pm</option>
+        <option value="04:30 pm">04:30 pm</option>
+        <option value="05:00 pm">05:00 pm</option>
+        <option value="05:30 pm">05:30 pm</option>
+        <option value="06:00 pm">06:00 pm</option>
+        <option value="06:30 pm">06:30 pm</option>
+        <option value="07:00 pm">07:00 pm</option>
+        <option value="07:30 pm">07:30 pm</option>
+        <option value="08:00 pm">08:00 pm</option>
+        <option value="08:30 pm">08:30 pm</option>
+        <option value="09:00 pm">09:00 pm</option>
+        <option value="09:30 pm">09:30 pm</option>
+        <option value="10:00 pm">10:00 pm</option>
+        <option value="10:30 pm">10:30 pm</option>
+        <option value="11:00 pm">11:00 pm</option>
+        <option value="11:30 pm">11:30 pm</option>
+      </select>
+      <br>
+        <div class="checkbox">
+		        <label for="friday_hours"><input oninput="this.className = ''" type="checkbox" name="friday_hours" value="Friday" requried>Friday</label>
+		      </div>
+		  <div class="checkbox">
+		        <label for="friday_hours_closed"><input oninput="this.className = ''" type="checkbox" name="friday_hours_closed" value="Closed" requried>Closed</label>
+		  </div>
+		  <br>
+	 <label for="friday_from_hours">From Hours:</label>
+	 <br>
+      <select class="form-control" name="friday_from_hours" oninput="this.className = ''" value="<%= restaurant.friday_from_hours %>" multiple>
+        <option value="12:00 am">12:00 am</option>
+        <option value="12:30 am">12:30 am</option>
+        <option value="01:00 am">01:00 am</option>
+        <option value="01:30 am">01:30 am</option>
+        <option value="02:00 am">02:00 am</option>
+        <option value="02:30 am">02:30 am</option>
+        <option value="03:00 am">03:00 am</option>
+        <option value="03:30 am">03:30 am</option>
+        <option value="04:00 am">04:00 am</option>
+        <option value="04:30 am">04:30 am</option>
+        <option value="05:00 am">05:00 am</option>
+        <option value="05:30 am">05:30 am</option>
+        <option value="06:00 am">06:00 am</option>
+        <option value="06:30 am">06:30 am</option>
+        <option value="07:00 am">07:00 am</option>
+        <option value="07:30 am">07:30 am</option>
+        <option value="08:00 am">08:00 am</option>
+        <option value="08:30 am">08:30 am</option>
+        <option value="09:00 am">09:00 am</option>
+        <option value="09:30 am">09:30 am</option>
+        <option value="10:00 am">10:00 am</option>
+        <option value="10:30 am">10:30 am</option>
+        <option value="11:00 am">11:00 am</option>
+        <option value="11:30 am">11:30 am</option>
+        <option value="12:00 pm">12:00 pm</option>
+        <option value="12:30 pm">12:30 pm</option>
+        <option value="01:00 pm">01:00 pm</option>
+        <option value="01:30 pm">01:30 pm</option>
+        <option value="02:00 pm">02:00 pm</option>
+        <option value="02:30 pm">02:30 pm</option>
+        <option value="03:00 pm">03:00 pm</option>
+        <option value="03:30 pm">03:30 pm</option>
+        <option value="04:00 pm">04:00 pm</option>
+        <option value="04:30 pm">04:30 pm</option>
+        <option value="05:00 pm">05:00 pm</option>
+        <option value="05:30 pm">05:30 pm</option>
+        <option value="06:00 pm">06:00 pm</option>
+        <option value="06:30 pm">06:30 pm</option>
+        <option value="07:00 pm">07:00 pm</option>
+        <option value="07:30 pm">07:30 pm</option>
+        <option value="08:00 pm">08:00 pm</option>
+        <option value="08:30 pm">08:30 pm</option>
+        <option value="09:00 pm">09:00 pm</option>
+        <option value="09:30 pm">09:30 pm</option>
+        <option value="10:00 pm">10:00 pm</option>
+        <option value="10:30 pm">10:30 pm</option>
+        <option value="11:00 pm">11:00 pm</option>
+        <option value="11:30 pm">11:30 pm</option>
+      </select>
+      <br>
+      <label for="friday_to_hours">To Hours:</label>
+      <br>
+      <select class="form-control" name="friday_to_hours" oninput="this.className = ''" value="<%= restaurant.friday_to_hours %>" multiple>
+        <option value="12:00 am">12:00 am</option>
+        <option value="12:30 am">12:30 am</option>
+        <option value="01:00 am">01:00 am</option>
+        <option value="01:30 am">01:30 am</option>
+        <option value="02:00 am">02:00 am</option>
+        <option value="02:30 am">02:30 am</option>
+        <option value="03:00 am">03:00 am</option>
+        <option value="03:30 am">03:30 am</option>
+        <option value="04:00 am">04:00 am</option>
+        <option value="04:30 am">04:30 am</option>
+        <option value="05:00 am">05:00 am</option>
+        <option value="05:30 am">05:30 am</option>
+        <option value="06:00 am">06:00 am</option>
+        <option value="06:30 am">06:30 am</option>
+        <option value="07:00 am">07:00 am</option>
+        <option value="07:30 am">07:30 am</option>
+        <option value="08:00 am">08:00 am</option>
+        <option value="08:30 am">08:30 am</option>
+        <option value="09:00 am">09:00 am</option>
+        <option value="09:30 am">09:30 am</option>
+        <option value="10:00 am">10:00 am</option>
+        <option value="10:30 am">10:30 am</option>
+        <option value="11:00 am">11:00 am</option>
+        <option value="11:30 am">11:30 am</option>
+        <option value="12:00 pm">12:00 pm</option>
+        <option value="12:30 pm">12:30 pm</option>
+        <option value="01:00 pm">01:00 pm</option>
+        <option value="01:30 pm">01:30 pm</option>
+        <option value="02:00 pm">02:00 pm</option>
+        <option value="02:30 pm">02:30 pm</option>
+        <option value="03:00 pm">03:00 pm</option>
+        <option value="03:30 pm">03:30 pm</option>
+        <option value="04:00 pm">04:00 pm</option>
+        <option value="04:30 pm">04:30 pm</option>
+        <option value="05:00 pm">05:00 pm</option>
+        <option value="05:30 pm">05:30 pm</option>
+        <option value="06:00 pm">06:00 pm</option>
+        <option value="06:30 pm">06:30 pm</option>
+        <option value="07:00 pm">07:00 pm</option>
+        <option value="07:30 pm">07:30 pm</option>
+        <option value="08:00 pm">08:00 pm</option>
+        <option value="08:30 pm">08:30 pm</option>
+        <option value="09:00 pm">09:00 pm</option>
+        <option value="09:30 pm">09:30 pm</option>
+        <option value="10:00 pm">10:00 pm</option>
+        <option value="10:30 pm">10:30 pm</option>
+        <option value="11:00 pm">11:00 pm</option>
+        <option value="11:30 pm">11:30 pm</option>
+      </select>
+      <br>
+      <div class="checkbox">
+		        <label for="saturday_hours"><input oninput="this.className = ''" type="checkbox" name="saturday_hours" value="Saturday" requried>Saturday</label>
+		      </div>
+		      <div class="checkbox">
+		        <label for="saturday_hours_closed"><input oninput="this.className = ''" type="checkbox" name="saturday_hours_closed" value="Closed" requried>Closed</label>
+		  </div>
+		  <br>
+      <label for="saturday_from_hours">From Hours:</label>
+      <br>
+      <select class="form-control" name="saturday_from_hours" oninput="this.className = ''" value="<%= restaurant.saturday_from_hours %>" multiple>
+        <option value="12:00 am">12:00 am</option>
+        <option value="12:30 am">12:30 am</option>
+        <option value="01:00 am">01:00 am</option>
+        <option value="01:30 am">01:30 am</option>
+        <option value="02:00 am">02:00 am</option>
+        <option value="02:30 am">02:30 am</option>
+        <option value="03:00 am">03:00 am</option>
+        <option value="03:30 am">03:30 am</option>
+        <option value="04:00 am">04:00 am</option>
+        <option value="04:30 am">04:30 am</option>
+        <option value="05:00 am">05:00 am</option>
+        <option value="05:30 am">05:30 am</option>
+        <option value="06:00 am">06:00 am</option>
+        <option value="06:30 am">06:30 am</option>
+        <option value="07:00 am">07:00 am</option>
+        <option value="07:30 am">07:30 am</option>
+        <option value="08:00 am">08:00 am</option>
+        <option value="08:30 am">08:30 am</option>
+        <option value="09:00 am">09:00 am</option>
+        <option value="09:30 am">09:30 am</option>
+        <option value="10:00 am">10:00 am</option>
+        <option value="10:30 am">10:30 am</option>
+        <option value="11:00 am">11:00 am</option>
+        <option value="11:30 am">11:30 am</option>
+        <option value="12:00 pm">12:00 pm</option>
+        <option value="12:30 pm">12:30 pm</option>
+        <option value="01:00 pm">01:00 pm</option>
+        <option value="01:30 pm">01:30 pm</option>
+        <option value="02:00 pm">02:00 pm</option>
+        <option value="02:30 pm">02:30 pm</option>
+        <option value="03:00 pm">03:00 pm</option>
+        <option value="03:30 pm">03:30 pm</option>
+        <option value="04:00 pm">04:00 pm</option>
+        <option value="04:30 pm">04:30 pm</option>
+        <option value="05:00 pm">05:00 pm</option>
+        <option value="05:30 pm">05:30 pm</option>
+        <option value="06:00 pm">06:00 pm</option>
+        <option value="06:30 pm">06:30 pm</option>
+        <option value="07:00 pm">07:00 pm</option>
+        <option value="07:30 pm">07:30 pm</option>
+        <option value="08:00 pm">08:00 pm</option>
+        <option value="08:30 pm">08:30 pm</option>
+        <option value="09:00 pm">09:00 pm</option>
+        <option value="09:30 pm">09:30 pm</option>
+        <option value="10:00 pm">10:00 pm</option>
+        <option value="10:30 pm">10:30 pm</option>
+        <option value="11:00 pm">11:00 pm</option>
+        <option value="11:30 pm">11:30 pm</option>
+      </select>
+      <br>
+      <label for="saturday_to_hours">To Hours:</label>
+      <br>
+      <select class="form-control" name="saturday_to_hours" oninput="this.className = ''" value="<%= restaurant.saturday_to_hours %>" multiple>
+        <option value="12:00 am">12:00 am</option>
+        <option value="12:30 am">12:30 am</option>
+        <option value="01:00 am">01:00 am</option>
+        <option value="01:30 am">01:30 am</option>
+        <option value="02:00 am">02:00 am</option>
+        <option value="02:30 am">02:30 am</option>
+        <option value="03:00 am">03:00 am</option>
+        <option value="03:30 am">03:30 am</option>
+        <option value="04:00 am">04:00 am</option>
+        <option value="04:30 am">04:30 am</option>
+        <option value="05:00 am">05:00 am</option>
+        <option value="05:30 am">05:30 am</option>
+        <option value="06:00 am">06:00 am</option>
+        <option value="06:30 am">06:30 am</option>
+        <option value="07:00 am">07:00 am</option>
+        <option value="07:30 am">07:30 am</option>
+        <option value="08:00 am">08:00 am</option>
+        <option value="08:30 am">08:30 am</option>
+        <option value="09:00 am">09:00 am</option>
+        <option value="09:30 am">09:30 am</option>
+        <option value="10:00 am">10:00 am</option>
+        <option value="10:30 am">10:30 am</option>
+        <option value="11:00 am">11:00 am</option>
+        <option value="11:30 am">11:30 am</option>
+        <option value="12:00 pm">12:00 pm</option>
+        <option value="12:30 pm">12:30 pm</option>
+        <option value="01:00 pm">01:00 pm</option>
+        <option value="01:30 pm">01:30 pm</option>
+        <option value="02:00 pm">02:00 pm</option>
+        <option value="02:30 pm">02:30 pm</option>
+        <option value="03:00 pm">03:00 pm</option>
+        <option value="03:30 pm">03:30 pm</option>
+        <option value="04:00 pm">04:00 pm</option>
+        <option value="04:30 pm">04:30 pm</option>
+        <option value="05:00 pm">05:00 pm</option>
+        <option value="05:30 pm">05:30 pm</option>
+        <option value="06:00 pm">06:00 pm</option>
+        <option value="06:30 pm">06:30 pm</option>
+        <option value="07:00 pm">07:00 pm</option>
+        <option value="07:30 pm">07:30 pm</option>
+        <option value="08:00 pm">08:00 pm</option>
+        <option value="08:30 pm">08:30 pm</option>
+        <option value="09:00 pm">09:00 pm</option>
+        <option value="09:30 pm">09:30 pm</option>
+        <option value="10:00 pm">10:00 pm</option>
+        <option value="10:30 pm">10:30 pm</option>
+        <option value="11:00 pm">11:00 pm</option>
+        <option value="11:30 pm">11:30 pm</option>
+      </select>
+      <br>
+      <div class="checkbox">
+		     <label for="sunday_hours">
+		        <input oninput="this.className = ''" type="checkbox" name="sunday_hours" value="Sunday" requried>Sunday</label>
+	  </div>
+	  <div class="checkbox">
+		        <label for="sunday_hours_closed"><input oninput="this.className = ''" type="checkbox" name="sunday_hours_closed" value="Closed" requried>Closed</label>
+	  </div>
+		        <label for="sunday_from_hours">From Hours:</label>
+		        <br>
+      <select class="form-control" name="sunday_from_hours" oninput="this.className = ''" value="<%= restaurant.sunday_from_hours %>" multiple>
+        <option value="12:00 am">12:00 am</option>
+        <option value="12:30 am">12:30 am</option>
+        <option value="01:00 am">01:00 am</option>
+        <option value="01:30 am">01:30 am</option>
+        <option value="02:00 am">02:00 am</option>
+        <option value="02:30 am">02:30 am</option>
+        <option value="03:00 am">03:00 am</option>
+        <option value="03:30 am">03:30 am</option>
+        <option value="04:00 am">04:00 am</option>
+        <option value="04:30 am">04:30 am</option>
+        <option value="05:00 am">05:00 am</option>
+        <option value="05:30 am">05:30 am</option>
+        <option value="06:00 am">06:00 am</option>
+        <option value="06:30 am">06:30 am</option>
+        <option value="07:00 am">07:00 am</option>
+        <option value="07:30 am">07:30 am</option>
+        <option value="08:00 am">08:00 am</option>
+        <option value="08:30 am">08:30 am</option>
+        <option value="09:00 am">09:00 am</option>
+        <option value="09:30 am">09:30 am</option>
+        <option value="10:00 am">10:00 am</option>
+        <option value="10:30 am">10:30 am</option>
+        <option value="11:00 am">11:00 am</option>
+        <option value="11:30 am">11:30 am</option>
+        <option value="12:00 pm">12:00 pm</option>
+        <option value="12:30 pm">12:30 pm</option>
+        <option value="01:00 pm">01:00 pm</option>
+        <option value="01:30 pm">01:30 pm</option>
+        <option value="02:00 pm">02:00 pm</option>
+        <option value="02:30 pm">02:30 pm</option>
+        <option value="03:00 pm">03:00 pm</option>
+        <option value="03:30 pm">03:30 pm</option>
+        <option value="04:00 pm">04:00 pm</option>
+        <option value="04:30 pm">04:30 pm</option>
+        <option value="05:00 pm">05:00 pm</option>
+        <option value="05:30 pm">05:30 pm</option>
+        <option value="06:00 pm">06:00 pm</option>
+        <option value="06:30 pm">06:30 pm</option>
+        <option value="07:00 pm">07:00 pm</option>
+        <option value="07:30 pm">07:30 pm</option>
+        <option value="08:00 pm">08:00 pm</option>
+        <option value="08:30 pm">08:30 pm</option>
+        <option value="09:00 pm">09:00 pm</option>
+        <option value="09:30 pm">09:30 pm</option>
+        <option value="10:00 pm">10:00 pm</option>
+        <option value="10:30 pm">10:30 pm</option>
+        <option value="11:00 pm">11:00 pm</option>
+        <option value="11:30 pm">11:30 pm</option>
+      </select>
+      <br>
+      <label for="sunday_to_hours">To Hours:</label>
+      <br>
+      <select class="form-control" name="sunday_to_hours" oninput="this.className = ''" value="<%= restaurant.sunday_from_hours %>" multiple>
+        <option value="12:00 am">12:00 am</option>
+        <option value="12:30 am">12:30 am</option>
+        <option value="01:00 am">01:00 am</option>
+        <option value="01:30 am">01:30 am</option>
+        <option value="02:00 am">02:00 am</option>
+        <option value="02:30 am">02:30 am</option>
+        <option value="03:00 am">03:00 am</option>
+        <option value="03:30 am">03:30 am</option>
+        <option value="04:00 am">04:00 am</option>
+        <option value="04:30 am">04:30 am</option>
+        <option value="05:00 am">05:00 am</option>
+        <option value="05:30 am">05:30 am</option>
+        <option value="06:00 am">06:00 am</option>
+        <option value="06:30 am">06:30 am</option>
+        <option value="07:00 am">07:00 am</option>
+        <option value="07:30 am">07:30 am</option>
+        <option value="08:00 am">08:00 am</option>
+        <option value="08:30 am">08:30 am</option>
+        <option value="09:00 am">09:00 am</option>
+        <option value="09:30 am">09:30 am</option>
+        <option value="10:00 am">10:00 am</option>
+        <option value="10:30 am">10:30 am</option>
+        <option value="11:00 am">11:00 am</option>
+        <option value="11:30 am">11:30 am</option>
+        <option value="12:00 pm">12:00 pm</option>
+        <option value="12:30 pm">12:30 pm</option>
+        <option value="01:00 pm">01:00 pm</option>
+        <option value="01:30 pm">01:30 pm</option>
+        <option value="02:00 pm">02:00 pm</option>
+        <option value="02:30 pm">02:30 pm</option>
+        <option value="03:00 pm">03:00 pm</option>
+        <option value="03:30 pm">03:30 pm</option>
+        <option value="04:00 pm">04:00 pm</option>
+        <option value="04:30 pm">04:30 pm</option>
+        <option value="05:00 pm">05:00 pm</option>
+        <option value="05:30 pm">05:30 pm</option>
+        <option value="06:00 pm">06:00 pm</option>
+        <option value="06:30 pm">06:30 pm</option>
+        <option value="07:00 pm">07:00 pm</option>
+        <option value="07:30 pm">07:30 pm</option>
+        <option value="08:00 pm">08:00 pm</option>
+        <option value="08:30 pm">08:30 pm</option>
+        <option value="09:00 pm">09:00 pm</option>
+        <option value="09:30 pm">09:30 pm</option>
+        <option value="10:00 pm">10:00 pm</option>
+        <option value="10:30 pm">10:30 pm</option>
+        <option value="11:00 pm">11:00 pm</option>
+        <option value="11:30 pm">11:30 pm</option>
+      </select>
+      <br>
+				
+	</div>
+<!--/end of form group-->
+	</div>
+				<div style="overflow:auto;">
+    <div style="float:right;">
+      <button type="button" id="prevBtn" onclick="nextPrev(-1)">PREVIOUS</button>
+      <button type="button" id="nextBtn" onclick="nextPrev(1)">NEXT</button>
+    </div>
+  </div>
+  <!-- Circles which indicates the steps of the form: -->
+  <div style="text-align:center;margin-top:40px;">
+    <span class="step"></span>
+    <span class="step"></span>
+    <span class="step"></span>
+    <span class="step"></span>
+    <span class="step"></span>
+    <span class="step"></span>
+    <span class="step"></span>
+ 
+  </div>
+</form>
+			<a href="/restaurants">Go Back</a>
+		</div>
+	</div>
+	<script type="text/javascript">
+	var currentTab = 0; // Current tab is set to be the first tab (0)
+showTab(currentTab); // Display the current tab
+
+function showTab(n) {
+  // This function will display the specified tab of the form...
+  var x = document.getElementsByClassName("form-group");
+  x[n].style.display = "block";
+  //... and fix the Previous/Next buttons:
+  if (n == 0) {
+    document.getElementById("prevBtn").style.display = "none";
+  } else {
+    document.getElementById("prevBtn").style.display = "inline";
+  }
+  if (n == (x.length - 1)) {
+    document.getElementById("nextBtn").innerHTML = "UPDATE";
+  } else {
+    document.getElementById("nextBtn").innerHTML = "NEXT";
+  }
+  //... and run a function that will display the correct step indicator:
+  fixStepIndicator(n)
+}
+
+function nextPrev(n) {
+  // This function will figure out which tab to display
+  //this function is from controlling the multi-stepform
+  var x = document.getElementsByClassName("form-group");
+  // Exit the function if any field in the current tab is invalid:
+  if (n == 1 && !validateForm()) return false;
+  // Hide the current tab:
+  x[currentTab].style.display = "none";
+  // Increase or decrease the current tab by 1:
+  currentTab = currentTab + n;
+  // if you have reached the end of the form...
+  if (currentTab >= x.length) {
+    // ... the form gets submitted:
+    document.getElementById("regForm").submit();
+    return false;
+  }
+  // Otherwise, display the correct tab:
+  showTab(currentTab);
+}
+
+function validateForm() {
+  // This function deals with validation of the form fields
+  var x, y, i, valid = true;
+  x = document.getElementsByClassName("form-group");
+  y = x[currentTab].getElementsByTagName("input");
+  // A loop that checks every input field in the current tab:
+  for (i = 0; i < y.length; i++) {
+    // If a field is empty...
+    if (y[i].value == "") {
+      // add an "invalid" class to the field:
+      y[i].className += " invalid";
+      // and set the current valid status to false
+      valid = false;
+    }
+  }
+  // If the valid status is true, mark the step as finished and valid:
+  if (valid) {
+    document.getElementsByClassName("step")[currentTab].className += " finish";
+  }
+  return valid; // return the valid status
+}
+
+function fixStepIndicator(n) {
+  // This function removes the "active" class of all steps...
+  var i, x = document.getElementsByClassName("step");
+  for (i = 0; i < x.length; i++) {
+    x[i].className = x[i].className.replace(" active", "");
+  }
+  //... and adds the "active" class on the current step:
+  x[n].className += " active";
+}
+
+</script>
+
+
+<% include ../partials/footer %>

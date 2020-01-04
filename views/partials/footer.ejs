@@ -2,9 +2,51 @@
 <!-- /.container -->
 <footer class="footer">
           <div class="container">
-            <p class="text-muted">&copy; Have Lots Need Lots 2019 | <a href="/lots">Home</a> | <a href="/lots/new">New Listings</a></p>
+            <p class="text-muted" style="color: black;"><script>document.write(new Date().getFullYear());</script> &copy; Order Food Online  | <a href="/restaurants" style="color: black">Home</a> | <a style="color: black;" href="/restaurants/new">New Listings</a></p>
           </div>
+<!--stickybar script-->
+<script type="text/css">
+  $(document).ready(function() {
+        var $navbar = $("#mNavbar");
+  
+        AdjustHeader(); // Incase the user loads the page from halfway down (or something);
+        $(window).scroll(function() {
+          AdjustHeader();
+          });
+  
+        function AdjustHeader(){
+          if ($(window).scrollTop() > 60) {
+            if (!$navbar.hasClass("navbar-fixed-top")) {
+            $navbar.addClass("navbar-fixed-top");
+          }
+          } else {
+            $navbar.removeClass("navbar-fixed-top");
+          }
+          }
+        });
+</script>
+<!--scroll to top-->
+<script>
+      //Get the button
+      var mybutton = document.getElementById("myBtn");
 
+      // When the user scrolls down 20px from the top of the document, show the button
+      window.onscroll = function() {scrollFunction()};
+
+      function scrollFunction() {
+      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        mybutton.style.display = "block";
+        } else {
+        mybutton.style.display = "none";
+        }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+        }
+      </script>
 <!-- jQuery CDN -->
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 

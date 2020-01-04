@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Contact Us | Have Lots Need Lots</title>
+  <title>Contact Us | Order Food Online</title>
 
   <!-- Bootstrap core CSS -->
    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
@@ -30,9 +30,9 @@
 <body>
 
   <!-- Navigation -->
-  <nav class="navbar navbar-light bg-white static-top">
+  <nav class="navbar navbar-default navbar-static-top" style="background-color: #e72525;">
     <div class="container">
-      <a class="navbar-brand" href="#"><img src="https://aws-website-amp-bbq2v.s3.amazonaws.com/logo.png" height="100px"></a>
+      <a class="navbar-brand" href="#"><img src="https://aws-website-amp-bbq2v.s3.amazonaws.com/order_food-online.png" height="100px"></a>
       <div class="container">
           <% if(!currentUser) {%>
      <a class="btn btn-primary" style="float: right; margin: 2px;" href="/register"><i class="fa fa-pencil"></i> Sign Up!</a>&nbsp;&nbsp;&nbsp;
@@ -63,13 +63,14 @@
     <div class="container">
       <div class="row">
         <div class="col-xl-9 mx-auto">
-          <h1 class="mb-5">Welcome to Have Lots Need Lots!</h1>
+          <h1 class="mb-5">Who Delivers in Your Neighbourhood?
+Order From Local Restaurants</h1>
         </div>
         <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
           <form action="/lots" method="GET"  class="navbar-form navbar-right">
             <div class="form-row">
               <div class="col-12 col-md-9 mb-2 mb-md-0">
-                <input type="text" name="search" class="form-control form-control-lg" placeholder="ie. Kids Clothes, Kids Toys">
+                <input type="text" name="search" class="form-control form-control-lg" placeholder="What City Are you Located In?">
               </div>
                 <div class="col-12 col-md-3">
                 <button type="submit" class="btn btn-block btn-lg btn-primary">
@@ -83,101 +84,77 @@
     </div>
   </header>
 
-  <!-- Icons Grid -->
-  <section class="features-icons bg-light text-center">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4">
-          <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-            <div class="features-icons-icon d-flex">
-              <i class="fa fa-camera m-auto text-primary"></i>
-            </div>
-            <h3>Upload Pictures</h3>
-            <p class="lead mb-0">Users can upload photo's to their lots.</p>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="features-icons-item mx-auto mb-0 mb-lg-3">
-            <div class="features-icons-icon d-flex">
-              <i class="fa fa-user-plus m-auto text-primary"></i>
-            </div>
-            <h3>Post Lots for free</h3>
-            <p class="lead mb-0">Post as many lots as needed edit, update and delete your lots as required. Its all free!</p>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="features-icons-item mx-auto mb-0 mb-lg-3">
-            <div class="features-icons-icon d-flex">
-              <i class="fa fa-thumbs-o-up m-auto text-primary"></i>
-            </div>
-            <h3>Easy to Use</h3>
-            <p class="lead mb-0">Posting Lots of stuff couldn't be more easy with our website.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- Image Showcases -->
-  <section class="showcase">
-    <div class="container-fluid p-0">
-      <div class="row no-gutters">
-
-        <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('https://aws-website-amp-bbq2v.s3.amazonaws.com/kids_toys.jpg');"></div>
-        <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+  <section class="container">
+    <div class="container">
+      <div class="row">
+        <div class="col">
           <!--contact form/php form script action--->
-       <h2>Contact Us</h2>
-       <form name="contactform" method="post" action="#" class="form-group">
+          <br>
+          <br>
+       <h2>CONTACT US</h2>
+       <form name="contactform" method="POST" action="send_form_email.php" class="form-group">
          <label for="first_name"></label>
-         <input type="text" name="first_name" maxlength="50" class="form-control" placeholder="First Name" required>
+         <input type="text" name="first_name" maxlength="50" class="form-control" placeholder="FIRST NAME" required>
          <br>
          <label for="last_name"></label>
-         <input type="text" name="last_name" maxlength="50" class="form-control" placeholder="Last Name" required>
+         <input type="text" name="last_name" maxlength="50" class="form-control" placeholder="LAST NAME" required>
          <br>
          <label for="email"></label>
-         <input type="text" name="email" maxlength="80" class="form-control" placeholder="Email" required>
+         <input type="text" name="email" maxlength="80" class="form-control" placeholder="EMAIL ADDRESS" required>
+         <br>
+         <label for="business_name"></label>
+         <input type="text" name="business_name" maxlength="80" class="form-control" placeholder="RESTAURANT NAME" required>
          <br>
          <label for="telephone"></label>
-         <input type="text" name="telephone" maxlength="30" class="form-control" placeholder="Telephone Number" required>
+         <input type="text" name="telephone" maxlength="30" class="form-control" placeholder="TELEPHONE NUMBER" required>
          <br>
+         <div class="form-group">
+		    					<div class="form-field">
+          					<div class="select-wrap">
+          					  <label for="how_hear_about_us">How Your Hear About Us?</label>
+                      <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                      <select name="how_hear_about_us" class="form-control">
+                      	<option value="Select Your Services">Select Your Option</option>
+                        <option value="Google Search Result">Google Search Result</option>
+                        <option value="Facebook">Facebook</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="Bing, Yahoo">Bing, Yahoo</option></option>
+												<option value="Other">Other</option>
+                      </select>
+                    </div>
+		              </div>
+		    				</div>
+		    				<br>
+		    				<div class="form-group">
+		    					<div class="form-field">
+          					<div class="select-wrap">
+          					  <label for="how_hear_about_us">What Services You Interested In?</label>
+                      <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                      <select name="services_required" class="form-control">
+                      	<option value="Select Your Services">Select Your Option</option>
+                        <option value="Restaurant Ordering Website">Restaurant Ordering Website</option>
+                        <option value="Restaurant Business Listing">Restaurant Business Listing</option>
+                        <option value="Restaurant Business Listing Removal">Restaurant Business Listing Removal</option>
+                        <option value="Restaurant Marketing">Restaurant Markerting</option>
+												<option value="Online Ordering System">Online Ordering System</option>
+												<option value="Restaurant Mobile App">Restaurant Mobile App</option>
+												<option value="Delivery Services">Delivery Services</option>
+												<option value="POS Ordering System">POS Ordering System</option>
+                      </select>
+                    </div>
+		              </div>
+		    				</div>
          <label for="comments"></label>
-         <textarea name="comments" maxlength="1000" cols="25" rows="6" class="form-control" placeholder="Your Message"></textarea>
+         <textarea name="comments" maxlength="1000" cols="25" rows="6" class="form-control" placeholder="YOUR MESSAGE"></textarea>
          <br>
-         <input type="submit" value="Submit" class="btn btn-primary">
+         <input type="submit" value="SUBMIT" class="btn btn-primary" style="height: 50px; width: 125px;">
        </form>
         <!--end contact form php-->
         </div>
       </div>
-
-  <!-- Testimonials -->
-  <section class="testimonials text-center bg-light">
-    <div class="container">
-      <h2 class="mb-5">What people are saying...</h2>
-      <div class="row">
-        <div class="col-lg-4">
-          <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-            <img class="img-fluid rounded-circle mb-3" src="https://aws-website-amp-bbq2v.s3.amazonaws.com/testimonial-image-1.png" alt="">
-            <h5>Margaret E.</h5>
-            <p class="font-weight-light mb-0">"Super Easy to Post a Lot, and Exchange Baby Items!"</p>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-            <img class="img-fluid rounded-circle mb-3" src="https://aws-website-amp-bbq2v.s3.amazonaws.com/testimonial-image-2.png" alt="">
-            <h5>Fred S.</h5>
-            <p class="font-weight-light mb-0">"I found some toys on this site for my son from someone local nearby me."</p>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-            <img class="img-fluid rounded-circle mb-3" src="https://aws-website-amp-bbq2v.s3.amazonaws.com/testimonial-image-3.png" alt="">
-            <h5>Sarah W.</h5>
-            <p class="font-weight-light mb-0">"Thanks so much for making these free resources available to us!"</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+      </section>
 
   <!-- Call to Action -->
   <section class="call-to-action text-white text-center">
@@ -222,7 +199,7 @@
               <a href="privacy-policy">Privacy Policy</a>
             </li>
           </ul>
-          <p class="text-muted small mb-4 mb-lg-0">&copy; Have Lots Need Lots 2019. All Rights Reserved.</p>
+          <p class="text-muted small mb-4 mb-lg-0">&copy; Order Food Online <script>document.write(new Date().getFullYear());</script>. All Rights Reserved.</p>
         </div>
         <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
           <ul class="list-inline mb-0">

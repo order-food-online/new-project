@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<title><%= restaurants.restaruant_name %></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="<%= restaurants.description %>">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="/stylesheets/main.css"/>
+		<style type="text/css">
+		  .tags {
+  list-style: none;
+  margin: 0;
+  overflow: hidden; 
+  padding: 0;
+}
+
+.tags li {
+  float: left; 
+}
+
+.tag {
+  background: #eee;
+  border-radius: 3px 0 0 3px;
+  color: #999;
+  display: inline-block;
+  height: 26px;
+  line-height: 26px;
+  padding: 0 20px 0 23px;
+  position: relative;
+  margin: 0 10px 10px 0;
+  text-decoration: none;
+  -webkit-transition: color 0.2s;
+}
+
+.tag::before {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+  content: '';
+  height: 6px;
+  left: 10px;
+  position: absolute;
+  width: 6px;
+  top: 10px;
+}
+
+.tag::after {
+  background: #fff;
+  border-bottom: 13px solid transparent;
+  border-left: 10px solid #eee;
+  border-top: 13px solid transparent;
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.tag:hover {
+  background-color: crimson;
+  color: white;
+}
+
+.tag:hover::after {
+   border-left-color: crimson; 
+}
+
+</style>
+		</head>
+   <body>
+      <!--scrollgototopbottom-->
+     <button onclick="topFunction()" id="myBtn" title="Go to top"><span class="glyphicon glyphicon-chevron-up"></span></button>
+     <!--/endscrolltotop-->
+	   <!--new navbar code-->
+	   <nav class="navbar navbar-default navbar-fixed-top" id="mNavbar">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            <a class="navbar-brand" href="/"><img src="https://aws-website-amp-bbq2v.s3.amazonaws.com/order_food-online.png" height="35px"></a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="<%= typeof page !== 'undefined' && page === 'restaurants' ? 'active' : '' %>"><a href="/restaurants">Home</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+              <% if(!currentUser){ %>
+                  <li class="<%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>"><a href="/login">Login</a></li>
+                  <li class="<%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>"><a href="/register">Sign Up</a></li>
+              <% } else { %>
+                  <li><a href="#"><span class="glyphicon glyphicon-user"></span> Signed In As <%= currentUser.username %></a></li>
+                  <li><a href="/users/<%= currentUser._id %>"><span class="glyphicon glyphicon-wrench"></span>  Profile</a><li>
+                  <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+              <% } %>
+          </ul>
+           <form action="/restaurants" method="GET" class="navbar-form navbar-right">
+                <div class="input-group">
+                  <input type="text" name="search" class="form-control" placeholder="Search">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                  </span>
+                </div>
+              </form>
+        </div>
+    </div>
+</nav>
+	   <!--/end navbar code-->
+	   <div class="container">
+		   <% if(error && error.length > 0){ %>
+		   		<div class="alert alert-danger">
+					<%= error %>
+		   		</div>
+		   <% } %>
+		   <% if(success && success.length > 0){ %>
+		    	<div class="alert alert-success">
+					<%= success %>
+		   		</div>
+		   <% } %>
+	   </div>
+	   <div class="container">
+	     <br>
+	     <br>
+	     <br>
+	     <br>
+
+	<div class="row">
+		<div class="col-md-3">
+			<!--sidebar bootstrap code-->
+			<br>
+			<h4><a><%= restaurants.restaurant_name %></a></h4>
+			<div class="list-group">
+				<li class="list-group-item"><a href="/restaurants/new" class="list-group-item-primary">Add Restaurant Location</a></li>
+				<li class="list-group-item"><a href="/users/<%= restaurants.author.id %>" class="list-group-item-primary">User Profile</a></li>
+				<li class="list-group-item"><a href="/restaurants/">View All Restaurants</a></li>
+			</div>
+			<div id="map"></div>
+		</div>
+		<br>
+		<div class="col-md-9">
+			<div class="thumbnail">
+				<img class="img-responsive" src="<%= restaurants.image.url %>" alt="<%= restaurants.restaruant_name %>">
+				<div class="caption-full">
+					<h4><a><%= restaurants.restaurant_name %></a></h4>
+					<h4 class="pull-right">&nbsp;&nbsp;Avg Price:<%= restaurants.price %></h4>
+					<!--code for likes starts-->
+					<div class="pull-right">
+                        <button type="button" class="btn btn-xs btn-primary" data-toggle="modal"
+                                data-target="#restaurantLikes">
+                            <span>Total likes: <i class="fa fa-thumbs-up"></i> <%= restaurants.likes.length %></span>
+                        </button>
+                    </div>
+                    <div style="padding-bottom: 10px;">
+                        <form action="/restaurants/<%= restaurants._id %>/like" method="POST">
+                            <div class="btn-group">
+                                <% if (currentUser && restaurants.likes.some(function (like) {
+                                    return like.equals(currentUser._id)
+                                })) { %>
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="fa fa-thumbs-up"></i> Liked (<%= restaurants.likes.length %>)
+                                </button>
+                                <% } else { %>
+                                <button class="btn btn-sm btn-secondary">
+                                    <i class="fa fa-thumbs-up"></i> Like (<%= restaurants.likes.length %>)
+                                </button>
+                                <% } %>
+                                <button type="button" class="btn btn-sm btn-default" data-toggle="modal"
+                                        data-target="#restaurantsLikes">See more details
+                                </button>
+                                <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
+                                data-target="#aiChat">AI Chat</button>
+                            </div>
+                        </form>
+                    </div>
+					<!--code for likes ends-->
+					<hr>
+					<!--tabs code-->
+					<ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item">
+           <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><span class="glyphicon glyphicon-list-alt"></span> DESCRIPTION</a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><span class="glyphicon glyphicon-map-marker"></span> ADDRESS</a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false"><span class="glyphicon glyphicon-phone-alt"></span> TELEPHONE</a>
+          </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"><br><br><br><%= restaurants.description %></div>
+          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"><%= restaurants.restaurant_address %></div>
+          <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab"><%= restaurants.restaurant_telephone %></div>
+          </div>
+         <!--/tabs code ends-->
+					<hr>
+					<p><strong><span class="glyphicon glyphicon-cutlery"></span> Cuisine Type:</strong> <a href="#" class="tag"><%= restaurants.cuisine_type %></a><a href="#" class="tag">
+					  <%= restaurants.cuisine_type1 %></a><a href="#" class="tag"><%= restaurants.cuisine_type2 %></a><a href="#" class="tag"><%= restaurants.cuisine_type3 %></a>
+					  
+					<hr>
+					<p><strong><span class="glyphicon glyphicon-map-marker"></span> Postal Code:</strong> <%= restaurants.restaurant_postal_code %></p>
+					<hr>
+					<p><strong><span class="glyphicon glyphicon-tags"></span> Tags:&nbsp;&nbsp;</strong><a href="#" class="tag"><%= restaurants.cuisine_tags %></a><a href="#" class="tag">
+					  <%= restaurants.cuisine_tag1 %></a><a href="#" class="tag"><%= restaurants.cuisine_tag2 %></a><a href="#" class="tag"><%= restaurants.cuisine_tag3 %></a>
+					  <a href="#" class="tag"><%= restaurants.cuisine_tag4 %></a>
+					  </p>
+					<hr>
+					<p><strong><span class="glyphicon glyphicon-cog"></span> SERVICES: </strong><a href="#" class="tag"><%= restaurants.restaurant_services %></a><a href="#" class="tag">
+					  <%= restaurants.restaurant_services1 %></a><a href="#" class="tag"><%= restaurants.restaurant_services2 %></a><a href="#" class="tag"><%= restaurants.restaurant_services3 %></a>
+					  <a href="#" class="tag"><%= restaurants.restaurant_services4 %></a></p>
+					<hr>
+					<p><strong> <span class="glyphicon glyphicon-globe"></span> WEBSITE:</strong> <a href="<%=restaurants.restaurant_website %>"><%= restaurants.restaurant_website %></a></p>
+					<hr>
+					<p><strong><span class="glyphicon glyphicon-credit-card"></span> Payment Methods:</strong> <%= restaurants.payment_methods %></p>
+					<hr>
+					<p>
+						<em>Submitted By: <a href="/users/<%= restaurants.author.id %>"><%= restaurants.author.username %></a>, <%= moment(restaurants.createdAt).fromNow() %></em>
+					</p>
+					<!--EJS CODE FOR HIDDEN BUTTONS RESTAURANT LISTINGS-->
+					<% if(currentUser && restaurants.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin){ %>
+						<a class="btn btn-xs btn-warning" href="/restaurants/<%= restaurants._id %>/edit">Edit</a>
+ 						<form id="delete-form" action="/restaurants/<%= restaurants._id %>?_method=DELETE" method="POST">					
+						<button class="btn btn-xs btn-danger">Delete</button>
+						</form>
+					<% } %>
+					<div style="margin-top: 10px;">
+						<a class="btn btn-default" href="/restaurants"><i class="fa fa-arrow-left"></i>Go Back</a>
+					</div>
+					<!--/EJS CODE ENDS HIDDEN BUTTONS RESTAURANTS LISTINGS-->
+				</div>
+			</div>
+		<!--form data for menu-->
+		<!--Business Hours data display here-->
+		<div class="thumbnail">
+					<h3 style="text-align: center;">Business Hours</h3>
+		<table class="table" style="border: 1px solid light-grey;">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">Days of Week</th>
+      <th scope="col">Opening Hours</th>
+      <th scope="col">Closing Hours</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <% if(!restaurants.monday_hours_closed) { %>
+      <th scope="row"><%= restaurants.monday_hours %></th>
+      <td><%= restaurants.monday_from_hours %></td>
+      <td><%= restaurants.monday_to_hours %></td>
+      <% } else { %> 
+      <th scope="row" style="display:none;"><%= restaurants.monday_hours %></th>
+      <td style="display:none;"><%= restaurants.monday_from_hours %></td>
+      <td style="display:none;"><%= restaurants.monday_to_hours %></td>
+      <% } %>
+    </tr>
+    <tr>
+       <% if(!restaurants.tuesday_hours_closed) { %>
+      <th scope="row"><%= restaurants.tuesday_hours %></th>
+      <td><%= restaurants.tuesday_from_hours %></td>
+      <td><%= restaurants.tuesday_to_hours %></td>
+      <% } else { %> 
+      <th scope="row" style="display:none;"><%= restaurants.tuesday_hours %></th>
+      <td style="display:none;"><%= restaurants.tuesday_from_hours %></td>
+      <td style="display:none;"><%= restaurants.tuesday_to_hours %></td>
+      <% } %>
+    </tr>
+    <tr>
+      <% if(!restaurants.wednesday_hours_closed) { %>
+      <th scope="row"><%= restaurants.wednesday_hours %></th>
+      <td><%= restaurants.wednesday_from_hours %></td>
+      <td><%= restaurants.wednesday_to_hours %></td>
+      <% } else { %>
+      <th scope="row" style="display:none;"><%= restaurants.wednesday_hours %></th>
+      <td style="display:none;"><%= restaurants.wednesday_from_hours %></td>
+      <td style="display:none;"><%= restaurants.wednesday_to_hours %></td>
+      <% } %>
+    </tr>
+    <tr>
+      <% if(!restaurants.thursday_hours_closed) { %>
+      <th scope="row"><%= restaurants.thursday_hours %></th>
+      <td><%= restaurants.thursday_from_hours %></td>
+      <td><%= restaurants.thursday_to_hours %></td>
+      <% } else { %>
+      <th scope="row" style="display:none;"><%= restaurants.thursday_hours %></th>
+      <td style="display:none;"><%= restaurants.thursday_from_hours %></td>
+      <td style="display:none;"><%= restaurants.thursday_to_hours %></td>
+      <% } %>
+    </tr>
+    <tr>
+      <% if(!restaurants.friday_hours_closed) { %>
+      <th scope="row"><%= restaurants.friday_hours %></th>
+      <td><%= restaurants.friday_from_hours %></td>
+      <td><%= restaurants.friday_to_hours %></td>
+      <% } else { %>
+      <th scope="row" style="display:none;"><%= restaurants.friday_hours %></th>
+      <td style="display:none;"><%= restaurants.friday_from_hours %></td>
+      <td style="display:none;"><%= restaurants.friday_to_hours %></td>
+      <% } %>
+    </tr>
+    <tr>
+      <% if(!restaurants.saturday_hours_closed) { %>
+      <th scope="row"><%= restaurants.saturday_hours %></th>
+      <td><%= restaurants.saturday_from_hours %></td>
+      <td><%= restaurants.saturday_to_hours %></td>
+      <% } else { %>
+      <th scope="row" style="display:none;"><%= restaurants.saturday_hours %></th>
+      <td style="display:none;"><%= restaurants.saturday_from_hours %></td>
+      <td style="display:none;"><%= restaurants.saturday_to_hours %></td>
+      <% } %>
+    </tr>
+    <tr>
+      <% if(!restaurants.sunday_hours_closed) { %>
+      <th scope="row"><%= restaurants.sunday_hours %></th>
+      <td><%= restaurants.sunday_from_hours %></td>
+      <td><%= restaurants.sunday_to_hours %></td>
+      <% } else { %>
+       <th scope="row" style="display:none;"><%= restaurants.sunday_hours %></th>
+      <td style="display:none;"><%= restaurants.sunday_from_hours %></td>
+      <td style="display:none;"><%= restaurants.sunday_to_hours %></td>
+      <% } %>
+    </tr>
+  </tbody>
+</table>
+</div>
+		<!--/end form data for business hours-->
+			
+			<!-- review section starts-->
+			<div class="thumbnail">
+                <div class="caption-full">
+                    <% if (restaurants.rating === 0) { %>
+                    <h5>
+                        <em>No reviews yet.</em>
+                    </h5>
+                    <% } else { %>
+                    <p>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star <% if (restaurants.rating > 1.5) { %> checked <% } %>"></span>
+                        <span class="fa fa-star <% if (restaurants.rating > 2.5) { %> checked <% } %>"></span>
+                        <span class="fa fa-star <% if (restaurants.rating > 3.5) { %> checked <% } %>"></span>
+                        <span class="fa fa-star <% if (restaurants.rating > 4.5) { %> checked <% } %>"></span>
+                        <em>(total reviews: <%= restaurants.reviews.length %>)</em>
+                    </p>
+                    <p>
+                        Current Restaurant Listing rating: <strong><%= restaurants.rating.toFixed(2) %></strong>
+                    </p>
+                    <p><h4>Latest reviews for this Restaurant Listing:</h4></p>
+                    <hr style="margin-top: 0;">
+                    <% restaurants.reviews.slice(0, 5).forEach(function(review){ %>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <%- '<span class="fa fa-star checked"></span>'.repeat(review.rating) %><%- '<span class="fa fa-star"></span>'.repeat(5 - review.rating) %>
+                            <div>Review by: <strong><%= review.author.username %></strong></div>
+                            <span><em><%= review.updatedAt.toDateString() %></em></span>
+                        </div>
+                        <div class="col-md-9">
+                            <p style="text-align: justify; word-wrap: break-word;">
+                                <%= review.text %>
+                            </p>
+                            <% if(currentUser && review.author.id.equals(currentUser._id)){ %>
+                            <a class="btn btn-xs btn-warning"
+                               href="/restaurants/<%=restaurants._id %>/reviews/<%=review._id %>/edit">Edit</a>
+                            <form id="delete-form" action="/restaurants/<%=restaurants._id %>/reviews/<%=review._id %>?_method=DELETE" method="POST">
+                                <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+                            </form>
+                            <% } %>
+                        </div>
+                    </div>
+                    <hr>
+                    <% }); %>
+                    <div style="margin-bottom: 10px;">
+                        <h4><a href="/restaurants/<%= restaurants._id %>/reviews"><i class="fa fa-search" aria-hidden="true"></i> See all reviews</a></h4>
+                    </div>
+                    <% } %>
+                    <div>
+                        <a class="btn btn-primary btn-lg <% if (currentUser && restaurants.reviews.some(function (review) {return review.author.id.equals(currentUser._id)})) { %> disabled <% } %>" href="/restaurants/<%= restaurants._id %>/reviews/new">
+                            Write a New Review</a>
+                    </div>
+                </div>
+            </div>
+
+			<!--comment section starts-->
+			<div class="well">
+      <!--Setting up the add new comment button that is used for collapsing-->
+      <div class="text-right">
+        <a class="btn btn-success pull-right" role="button" data-toggle="collapse" href="#collapseComment" aria-expanded="false" aria-controls="collapseComment">
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add new comment</a>
+      </div>
+
+      <!--Comment section title-->
+      <h4><strong>Comments <span class="glyphicon glyphicon glyphicon-comment" aria-hidden="true"></span></strong></h4>
+
+      <!--Collapse Add a comment form START-->
+      <div class="collapse" id="collapseComment">
+        <div class="well" style="border-left: 5px solid #00C851;">
+            <% if(!currentUser) { %>
+          <!--If the user is not logged in, direct him to the login page-->
+          <h5>You need to login before you can comment. <a href="/login">Click here</a> to go to the login page.</h5>
+            <% } %>
+            <% if(currentUser) { %>
+          <!--If the user is logged in, show the new comment form-->
+          <h4>Write your comment <span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></h4>
+          <form id="add-comment-form" action="/restaurants/<%= restaurants._id %>/comments" method="POST">
+            <div class="form-group">
+              <input class="form-control" type="text" disabled value="<%= currentUser.username %>">
+            </div>
+            <div class="form-group">
+              <textarea class="form-control" name="comment[text]" placeholder="Write your comment..." form="add-comment-form" rows="5" cols="70"></textarea>
+            </div>
+            <div class="form-group">
+              <button class="btn btn-success btn-sm">Comment <span class="glyphicon glyphicon-comment" aria-hidden="true"></span></button>
+            </div>
+          </form>
+            <% } %>
+        </div>
+      </div>
+      <!--Collapse Add a comment form END-->
+
+      <hr>
+
+      <!--Check if there are comments, if there are none say no comments.-->
+        <% if (restaurants.comments.length === 0) { %>
+      <em style="color: grey;">No comments yet.</em>
+        <% } %>
+
+      <!--Display comments by looping through them-->
+        <% restaurants.comments.forEach(function(comment) { %>
+      <div class="row">
+        <div class="col-md-12">
+          <strong>
+              <% if (currentUser && currentUser._id.equals(comment.author.id)) { %>
+            <!--If the current user owns the comment, change the color of the user icon-->
+            <span style="color: orange;" class="glyphicon glyphicon-user" aria-hidden="true"></span>
+              <% } else { %>
+            <!--Else just display it black-->
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+              <% } %>
+            <!--Print out the author username-->
+              <%= comment.author.username %>
+          </strong>
+          <!--Show when the comment was made-->
+          <span class="pull-right"><%= moment(comment.createdAt).fromNow() %></span>
+          <!--Printing the comment-->
+          <p><%= comment.text %></p>
+          <!--If the visitor is logged in and the owner of the comment, show the edit and delete buttons-->
+            <% if (currentUser && currentUser._id.equals(comment.author.id)) { %>
+          <!--Edit button used for collapsing the edit comment form-->
+          <a class="btn btn-xs btn-warning" role="button" data-toggle="collapse" href="#collapseEdit<%= comment._id %>" aria-expanded="false" aria-controls="collapse<%= comment._id %>">
+            Edit</a>
+          <!--Delete comment button-->
+          <form id="delete-form" action="/restaurants/<%= restaurants._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST" style="display: inline;">
+            <button class="btn btn-xs btn-danger">Delete</button>
+          </form>
+          <!--Edit comment form-->
+          <div class="collapse" id="collapseEdit<%= comment._id %>">
+            <div class="well" style="border-left: 5px solid #ffbb33; margin-top: 15px;">
+              <h4>Edit your comment <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></h4>
+              <form id="edit-comment-form<%= comment._id %>" action="/restaurants/<%= restaurants._id %>/comments/<%= comment._id %>?_method=PUT" method="POST">
+                <div class="form-group">
+                  <input class="form-control" type="text" disabled value="<%= currentUser.username %>">
+                </div>
+                <div class="form-group">
+                  <textarea class="form-control" name="comment[text]" placeholder="Your comment text..." form="edit-comment-form<%= comment._id %>" rows="5" cols="70"><%= comment.text %></textarea>
+                </div>
+                <div class="form-group">
+                  <button class="btn btn-warning btn-sm">Edit comment <span class="glyphicon glyphicon-comment" aria-hidden="true"></span></button>
+                </div>
+              </form>
+            </div>
+          </div>
+            <% } %>
+          <hr>
+        </div>
+      </div>
+        <% }) %>
+    </div>
+
+<!--comments section ends-->
+
+<!-- Restaurants Listings Likes Modal -->
+<div id="restaurantsLikes" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Restaurant Listing likes: <%= restaurants.likes.length %></h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Liked by:</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% restaurants.likes.forEach(function(like) { %>
+                        <tr>
+							<td><span class="badge"><i class="fa fa-user"></i></span> <%= like.username %></td>
+                        </tr>
+                    <% }); %>
+                    <% if (restaurants.likes.length === 0) { %>
+                        <tr>
+                            <td><em>No likes yet.</em></td>
+                        </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal ends-->
+<!--AI Chat code/modal-->
+<style>
+  body {
+  margin: 0;
+  font-family: sans-serif;
+  -ms-overflow-style: scrollbar;
+  overflow-style: scrollbar;
+}
+
+main {
+  max-width: 700px;
+  margin: auto;
+  height: 50vh;
+  background-color: #e72525;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+}
+
+.chat-box-container {
+  margin: 0;
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 0;
+}
+
+.chat-box-header {
+  display: block;
+  text-align: center;
+  color: #FFFFFF;
+}
+
+.chat-box {
+  margin: 4px 4px 4px 4px;
+  border: 2px solid black;
+  flex-grow: 1;
+  background-color: #FFF;
+  overflow-y: scroll;
+}
+
+.chat-box p {
+  margin: 0;
+  padding: 6px;
+  font-size: 16px;
+}
+
+.ai-person-container {
+  display: block;
+  overflow: auto;
+}
+
+.ai,
+.person {
+  overflow: auto;
+  margin: 4px;
+  border: 2px solid black;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.ai {
+  text-align: left;
+  margin-right: 36px;
+  border-color: red;
+  float: left;
+  border-bottom-left-radius: 0px;
+}
+
+.person {
+  text-align: left;
+  margin-left: 36px;
+  border-color: blue;
+  float: right;
+  border-bottom-right-radius: 0px;
+}
+
+.ai-date,
+.person-date {
+  font-size: 10px;
+  clear: both;
+}
+
+.ai-date {
+  float: left;
+  margin-left: 6px;
+}
+
+.person-date {
+  float: right;
+  margin-right: 6px;
+}
+
+.chat-input-container {
+  position: relative;
+  height: 60px;
+  width: 100%;
+  display: flex;
+  bottom: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+}
+
+.chat-input {
+  height: 40px;
+  width: auto;
+  display: inline-block;
+  flex-grow: 1;
+  padding: 2px 2px 2px 2px;
+  margin: 0 4px 0 4px;
+  font-size: 16px;
+  border: 2px solid black;
+  border-radius: 20px;
+}
+
+.chat-input:focus {
+  outline: 0;
+}
+
+.chat-submit {
+  width: 70px;
+  height: 47px !important;
+  padding: 2px 2px 2px 2px;
+  margin-right: 4px;
+  border: 2px solid black;
+  background-color: #FFFFFF;
+  font-size: 18px;
+}
+
+.chat-submit:hover {
+  cursor: pointer;
+  background-color: #e72525;
+}
+
+.chat-submit:focus {
+  outline: 0;
+}
+
+@media screen and (max-width: 480px) {
+  .chat-box p {
+    font-size: 30px;
+  }
+  .chat-input {
+    width: 60%;
+    float: left;
+    font-size: 28px;
+  }
+  .chat-submit {
+    float: right;
+  }
+}
+</style>
+<div id="aiChat" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+       <div class="modal-header">
+         <button type="button" class="close" style="color:#000000" data-dismiss="modal">&times;</button>
+<main id="main">
+  <div class="chat-box-container">
+      <img src="https://aws-website-amp-bbq2v.s3.amazonaws.com/order_food-online.png" height="60px" width="250px">
+    <div class="chat-box">
+    Where Here to Help You! Lets Start Ordering/Ask Question?
+    </div>
+  </div>
+  <div class="chat-input-container">
+    <input class="chat-input" type="text" name="chat-input" value="" placeholder="Questions/Write me Something"/>
+    <button class="chat-submit" type="button" name="submit">Submit</button>
+  </div>
+</main>
+</div>
+</div>
+</div>
+</div>
+<script>
+    (function() {
+
+  "use strict";
+
+  const responses = [
+    "Hello <strong> <% if(!currentUser){ %><a href='/register'>Would You Like to Sign Up!</a><% } else { %><%= currentUser.username %></strong> welcome to <strong><%= restaurants.restaurant_name %><% } %></strong>",
+    "How Can I help You?<%= restaurants.restaurant_name %>",
+    "We Are Located at <%= restaurants.restaurant_address %>, <%= restaurants.location %> , <%= restaurants.restaurant_postal_code %>",
+    "Reviews From <strong><%= restaurants.restaurant_name %></strong><br><% if (restaurants.rating === 0) { %><em>No reviews yet.</em><% } else { %><span class='fa fa-star checked'></span><span class='fa fa-star <% if (restaurants.rating > 1.5) { %> checked <% } %>'></span><span class='fa fa-star <% if (restaurants.rating > 2.5) { %> checked <% } %>'></span><span class='fa fa-star <% if (restaurants.rating > 3.5) { %> checked <% } %>'></span><span class='fa fa-star <% if (restaurants.rating > 4.5) { %> checked <% } %>'></span><br><span>total reviews: <%= restaurants.reviews.length %></span><% } %>",
+    "You need a Delivery Order for <strong><%= restaurants.restaurant_name %></strong>?",
+    "You need a Pick Up Order for <%= restaurants.restaurant_name %>?"
+    
+  ];
+  
+  const submit = document.querySelector(".chat-submit");
+  const chatBox = document.querySelector(".chat-box");
+  const chatInput = document.querySelector(".chat-input");
+
+  const aiThinking = true;
+
+  function chatTemplate(aiOrPerson) {
+    return (
+      `
+        <div class="ai-person-container">
+          <div class="${aiOrPerson.class}">&nbsp;
+          <span class="glyphicon glyphicon-comment" style="color: red;"></span>
+            <p>${aiOrPerson.text}</p>
+          </div>
+          <span class="${aiOrPerson.class}-date">${aiOrPerson.date}</span>
+        </div>
+      `
+    );
+  }
+
+  submit.addEventListener("click", function(e) {
+    appendChatBox(true);
+  });
+
+  document.addEventListener("keypress", function(e) {
+    if (e.keyCode == "13") {
+      appendChatBox(true);
+    }
+  })
+
+  function appendChatBox(fromPerson) {
+    console.log(fromPerson);
+    if (fromPerson && !chatInput.value.trim()) {
+      return;
+    }
+    const newChatDiv = chatTemplate({
+      class: fromPerson ? "person" : "ai",
+      text: fromPerson ? chatInput.value.trim() : aiResponse(),
+      date: fromPerson ? new Date() : new Date(Date.now() + 2000)
+    });
+    if (!fromPerson) {
+      // make it so it only responds once to multiple fast sentences
+      setTimeout(function() {
+        chatBox.innerHTML += newChatDiv;
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 2000)
+    } else {
+      chatBox.innerHTML += newChatDiv;
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+    if (fromPerson) {
+      chatInput.value = "";
+      appendChatBox(false);
+    }
+  }
+
+  function aiResponse() {
+    const responseIndex = getRandomInt(0, responses.length - 1);
+    const response = responses[responseIndex];
+    return response;
+  }
+
+  function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+}())
+
+function myFunction() {
+    var myWindow = window.open("https://www.orderfoodonline.ca/jobs/deliver-food-for-order-food-online", "_blank", "width=500,height=500");
+}
+ function myFunctionAI() {
+var myWindow = window.open("", "MsgWindow", "width=200,height=200");
+    myWindow.document.write("<iframe src='https://firebasestorage.googleapis.com/v0/b/order-food-online.appspot.com/o/data.html?alt=media&token=54ab075f-bc5e-4864-aec5-da6c57bde5c1' height='200px' width='200px'></iframe>");
+}
+</script> 
+<!--/ends AI Chat Code-->
+<!--google maps script-->
+<script>
+  function initMap() {
+    var lat = <%= restaurants.lat %>;
+    var lng = <%= restaurants.lng %>;
+    var center = {lat: lat, lng: lng };
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 8,
+        center: center,
+        scrollwheel: false
+    });
+    var contentString = `
+      <strong><%= restaurants.restaurant_name %><br />
+      <%= restaurants.restaurant_address %><br><%= restaurants.restaurant_telephone %><br><%= restaurants.location %></strong>
+      <p><%= restaurants.description %></p>
+      <% if (restaurants.rating === 0) { %>
+                    <em>No reviews yet.</em>
+                    <% } else { %>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star <% if (restaurants.rating > 1.5) { %> checked <% } %>"></span>
+                    <span class="fa fa-star <% if (restaurants.rating > 2.5) { %> checked <% } %>"></span>
+                    <span class="fa fa-star <% if (restaurants.rating > 3.5) { %> checked <% } %>"></span>
+                    <span class="fa fa-star <% if (restaurants.rating > 4.5) { %> checked <% } %>"></span>
+                    <br>
+                    <span>total reviews: <%= restaurants.reviews.length %></span>
+                    <% } %>
+    `
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+    var marker = new google.maps.Marker({
+        position: center,
+        map: map
+    });
+    marker.addListener('click', function() {
+      infowindow.open(map, marker);
+    });
+  }
+  //sticky bar
+  $(document).ready(function() {
+        var $navbar = $("#mNavbar");
+  
+        AdjustHeader(); // Incase the user loads the page from halfway down (or something);
+        $(window).scroll(function() {
+          AdjustHeader();
+          });
+  
+        function AdjustHeader(){
+          if ($(window).scrollTop() > 60) {
+            if (!$navbar.hasClass("navbar-fixed-top")) {
+            $navbar.addClass("navbar-fixed-top");
+          }
+          } else {
+            $navbar.removeClass("navbar-fixed-top");
+          }
+          }
+        });
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAe1yAyaNzM1pyf5R2gL4ET-C8retgt1JY &callback=initMap"></script>
+
+<% include ../partials/footer %>

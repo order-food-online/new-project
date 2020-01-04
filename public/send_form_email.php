@@ -1,3 +1,105 @@
+<?php
+if(isset($_POST['email'])) {
+ 
+    // EDIT THE 2 LINES BELOW AS REQUIRED
+    $email_to = "james@optimizationmedia.niz";
+    $email_subject = "Contact Form Submission Via OrderFoodOnline.ca";
+ 
+    function died($error) {
+        // your error code can go here
+        echo "We are very sorry, but there were error(s) found with the form you submitted. ";
+        echo "These errors appear below.<br /><br />";
+        echo $error."<br /><br />";
+        echo "Please go back and fix these errors.<br /><br />";
+        die();
+    }
+ 
+ 
+    // validation expected data exists
+    if(!isset($_POST['first_name']) ||
+        !isset($_POST['last_name']) ||
+        !isset($_POST['email']) ||
+        !isset($_POST['business_name']) ||
+        !isset($_POST['how_hear_about_us']) ||
+        !isset($_POST['services_required']) ||
+        !isset($_POST['telephone']) ||
+        !isset($_POST['comments'])) {
+        died('We are sorry, but there appears to be a problem with the form you submitted.');       
+    }
+ 
+     
+ 
+    $first_name = $_POST['first_name']; // required
+    $last_name = $_POST['last_name']; // required
+    $email_from = $_POST['email']; // required
+    $business_name = $_POST['business_name']; //required
+    $how_hear_about_us = $_POST['how_hear_about_us']; //required
+    $services_required = $_POST['services_required']; //required
+    $telephone = $_POST['telephone']; // required
+    $comments = $_POST['comments']; // required
+ 
+    $error_message = "";
+    $email_exp = '/^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/';
+ 
+  if(!preg_match($email_exp,$email_from)) {
+    $error_message .= 'The Email Address you entered does not appear to be valid.<br />';
+  }
+ 
+    $string_exp = "/^[A-Za-z .'-]+$/";
+ 
+  if(!preg_match($string_exp,$first_name)) {
+    $error_message .= 'The First Name you entered does not appear to be valid.<br />';
+  }
+ 
+  if(!preg_match($string_exp,$last_name)) {
+    $error_message .= 'The Last Name you entered does not appear to be valid.<br />';
+  }
+  
+  if(!preg_match($string_exp,$business_name)) {
+    $error_message .= 'The Business Name you entered does not appear to be valid.<br />';
+  }
+  
+  if(!preg_match($string_exp,$how_hear_about_us)) {
+    $error_message .= 'The How Hear About US you entered does not appear to be valid.<br />';
+  }
+
+  if(!preg_match($string_exp,$services_required)) {
+    $error_message .= 'The Services Required you entered does not appear to be valid.<br />';
+  }
+
+  if(strlen($comments) < 2) {
+    $error_message .= 'The Comments you entered do not appear to be valid.<br />';
+  }
+ 
+  if(strlen($error_message) > 0) {
+    died($error_message);
+  }
+ 
+    $email_message = "Form Contact Details below.\n\n";
+ 
+     
+    function clean_string($string) {
+      $bad = array("content-type","bcc:","to:","cc:","href");
+      return str_replace($bad,"",$string);
+    }
+ 
+     $email_message .= "First Name: ".clean_string($first_name)."\n";
+    $email_message .= "Last Name: ".clean_string($last_name)."\n";
+    $email_message .= "Email: ".clean_string($email_from)."\n";
+    $email_message .= "Business Name: ".clean_string($business_name)."\n";
+    $email_message .= "How Your Hear About Us: ".clean_string($how_hear_about_us)."\n";
+    $email_message .= "What Services You Interested in: ".clean_string($services_required)."\n";
+    $email_message .= "Telephone: ".clean_string($telephone)."\n";
+    $email_message .= "Comments: ".clean_string($comments)."\n";
+ 
+// create email headers
+$headers = 'From: '.$email_from."\r\n".
+'Reply-To: '.$email_from."\r\n" .
+'X-Mailer: PHP/' . phpversion();
+@mail($email_to, $email_subject, $email_message, $headers);  
+?>
+ 
+<!-- include your own success html here -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,13 +138,8 @@
     <div class="container">
       <a class="navbar-brand" href="#"><img src="https://aws-website-amp-bbq2v.s3.amazonaws.com/order_food-online.png" height="100px"></a>
       <div class="container">
-          <% if(!currentUser) {%>
      <a class="btn btn-primary" style="float: right; margin: 2px;" href="/register"><i class="fa fa-pencil"></i> Sign Up!</a>&nbsp;&nbsp;&nbsp;
      <a class="btn btn-primary" style="float: right; margin: 2px;" href="/login"><i class="fa fa-lock"></i> Login</a>
-         <% } else { %>
-         <a class="btn btn-primary" href="/logout" style="float: right; margin: 2px;"><i class="fa fa-unlock"></i> Logout</a>&nbsp;&nbsp;&nbsp;
-		<a class="btn btn-primary" href="#" style="float: right; margin: 2px;"><i class="fa fa-user-circle"></i> Signed In As <strong><%= currentUser.username %></strong></a>
-		<% } %>
         </div>
     </div>
   </nav>
@@ -50,16 +147,6 @@
   <!-- Masthead -->
   <header class="masthead text-white text-center">
       <div class="container">
-        <% if(error && error.length > 0){ %>
-            <div class="alert alert-danger" role="alert">
-                <%= error %>
-            </div>
-        <% } %>
-        <% if(success && success.length > 0){ %>
-            <div class="alert alert-success" role="alert">
-                <%= success %>
-            </div>
-        <% } %>
     </div>
     <div class="overlay"></div>
     <div class="container">
@@ -1464,3 +1551,8 @@ Order From Local Restaurants!</h1>
 </body>
 
 </html>
+
+<?php
+ 
+}
+?>
